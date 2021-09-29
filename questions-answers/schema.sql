@@ -16,20 +16,20 @@ CREATE DATABASE questions_answers;
 -- CREATE HELPER TABLES -----------
 -- --------------------------------
 
--- PRODUCTS -----------------------
+-- -- PRODUCTS -----------------------
 
-DROP TABLE IF EXISTS productshelper CASCADE;
+-- DROP TABLE IF EXISTS productshelper CASCADE;
 
-CREATE TABLE productshelper (
-  id INTEGER NULL DEFAULT NULL,
-  name TEXT NULL DEFAULT NULL,
-  slogan TEXT NULL DEFAULT NULL,
-  description TEXT NULL DEFAULT NULL,
-  category TEXT NULL DEFAULT NULL,
-  default_price INTEGER NULL DEFAULT NULL,
-  empty_column TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (id)
-);
+-- CREATE TABLE productshelper (
+--   id INTEGER NULL DEFAULT NULL,
+--   name TEXT NULL DEFAULT NULL,
+--   slogan TEXT NULL DEFAULT NULL,
+--   description TEXT NULL DEFAULT NULL,
+--   category TEXT NULL DEFAULT NULL,
+--   default_price INTEGER NULL DEFAULT NULL,
+--   empty_column TEXT NULL DEFAULT NULL,
+--   PRIMARY KEY (id)
+-- );
 
 -- --------------------------------
 -- CREATE ACTUAL TABLES -----------
@@ -78,14 +78,14 @@ CREATE TABLE answerphotos (
   PRIMARY KEY (photo_id)
 );
 
--- PRODUCTS -----------------------
+-- -- PRODUCTS -----------------------
 
-DROP TABLE IF EXISTS products CASCADE;
+-- DROP TABLE IF EXISTS products CASCADE;
 
-CREATE TABLE products (
-  product_id INTEGER NULL DEFAULT NULL,
-  PRIMARY KEY (product_id)
-);
+-- CREATE TABLE products (
+--   product_id INTEGER NULL DEFAULT NULL,
+--   PRIMARY KEY (product_id)
+-- );
 
 
 -- --------------------------------
@@ -95,7 +95,7 @@ CREATE TABLE products (
 -- QUESTIONS ----------------------
 
 -- Copy all CSV data into table
-\COPY  questions (question_id, product_id, question_body, question_date, asker_name, email, reported, question_helpfulness) FROM '../data/questions_sample.csv' DELIMITER ',' CSV HEADER;
+\COPY  questions (question_id, product_id, question_body, question_date, asker_name, email, reported, question_helpfulness) FROM '../data/questions.csv' DELIMITER ',' CSV HEADER;
 
 -- Convert Unix Epoch time (milliseconds) to timestamp
     -- divide by 1000 is because it's milliseconds, not seconds
@@ -107,14 +107,14 @@ ALTER TABLE questions ALTER COLUMN reported DROP DEFAULT;
 ALTER TABLE questions ALTER reported TYPE bool USING CASE WHEN reported='0' THEN FALSE ELSE TRUE END;
 ALTER TABLE questions ALTER COLUMN reported SET DEFAULT FALSE;
 
--- Show in terminal
-SELECT * FROM questions;
+-- -- Show in terminal
+-- SELECT * FROM questions;
 
 
 -- ANSWERS ------------------------
 
 -- Copy all CSV data into table
-\COPY  answers (id, question_id, body, date, answerer_name, email, reported, helpfulness) FROM '../data/answers_sample.csv' DELIMITER ',' CSV HEADER;
+\COPY  answers (id, question_id, body, date, answerer_name, email, reported, helpfulness) FROM '../data/answers.csv' DELIMITER ',' CSV HEADER;
 
 -- Convert Unix Epoch time (milliseconds) to timestamp
     -- divide by 1000 is because it's milliseconds, not seconds
@@ -126,42 +126,42 @@ ALTER TABLE answers ALTER COLUMN reported DROP DEFAULT;
 ALTER TABLE answers ALTER reported TYPE bool USING CASE WHEN reported='0' THEN FALSE ELSE TRUE END;
 ALTER TABLE answers ALTER COLUMN reported SET DEFAULT FALSE;
 
--- Show in terminal
-SELECT * FROM answers;
+-- -- Show in terminal
+-- SELECT * FROM answers;
 
 
 -- ANSWER PHOTOS ------------------
 
 -- Copy all CSV data into table
-\COPY  answerphotos (photo_id, answer_id, url) FROM '../data/answer_photos_sample.csv' DELIMITER ',' CSV HEADER;
+\COPY  answerphotos (photo_id, answer_id, url) FROM '../data/answers_photos.csv' DELIMITER ',' CSV HEADER;
 
--- Show in terminal
-SELECT * FROM answerphotos;
+-- -- Show in terminal
+-- SELECT * FROM answerphotos;
 
 
--- PRODUCTS -----------------------
+-- -- PRODUCTS -----------------------
 
--- Copy all CSV data into table
-\COPY productshelper (id, name, slogan, description, category, default_price, empty_column) FROM '../data/products_sample.csv' DELIMITER ',' CSV HEADER;
+-- -- Copy all CSV data into table
+-- \COPY productshelper (id, name, slogan, description, category, default_price, empty_column) FROM '../data/products_sample.csv' DELIMITER ',' CSV HEADER;
 
--- Export only the ID column to a CSV
-\COPY productshelper (id) TO '../data/products_sample_ids.csv' DELIMITER ',' CSV HEADER;
+-- -- Export only the ID column to a CSV
+-- \COPY productshelper (id) TO '../data/products_sample_ids.csv' DELIMITER ',' CSV HEADER;
 
--- Delete productshelper table
-DROP TABLE IF EXISTS productshelper CASCADE;
+-- -- Delete productshelper table
+-- DROP TABLE IF EXISTS productshelper CASCADE;
 
--- Copy CSV of IDs into products table
-\COPY products (product_id) FROM '../data/products_sample_ids.csv' DELIMITER ',' CSV HEADER;
+-- -- Copy CSV of IDs into products table
+-- \COPY products (product_id) FROM '../data/products_sample_ids.csv' DELIMITER ',' CSV HEADER;
 
--- Show in terminal
-SELECT * FROM products;
+-- -- Show in terminal
+-- SELECT * FROM products;
 
 
 -- --------------------------------
 -- FOREIGN KEYS -------------------
 -- --------------------------------
 
-ALTER TABLE questions ADD FOREIGN KEY (product_id) REFERENCES products (product_id);
 ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (question_id);
 ALTER TABLE answerphotos ADD FOREIGN KEY (answer_id) REFERENCES answers (id);
+-- ALTER TABLE questions ADD FOREIGN KEY (product_id) REFERENCES products (product_id);
 -- ---
