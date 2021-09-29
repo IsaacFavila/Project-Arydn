@@ -18,7 +18,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
 
-const products = require('./products/db.js');
 const productRouter = require('./products/routes.js');
 app.use('/db', productRouter);
 
