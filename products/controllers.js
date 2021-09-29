@@ -6,8 +6,7 @@ const getProducts = (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      console.log(products.rows);
-      res.status(200).json(products.rows);
+      res.status(200).json(products);
     }
   })
 }
@@ -18,8 +17,7 @@ const getInfo = (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      console.log(info.rows);
-      res.status(200).json(info.rows);
+      res.status(200).json(info);
     }
   })
 }
@@ -29,8 +27,7 @@ const getStyles = (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      console.log(styles.rows);
-      res.status(200).json(styles.rows);
+      res.status(200).json(styles);
     }
   })
 }
@@ -40,8 +37,7 @@ const getRelated = (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      console.log(related.rows);
-      res.status(200).json(related.rows);
+      res.status(200).json(related);
     }
   })
 }
