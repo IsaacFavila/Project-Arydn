@@ -1,7 +1,10 @@
 const pool = require('./db.js');
 
 const getProducts = (page=1, count=5, callback) => {
-
+  var queryStr = `select * from products limit ${count} offset ${(page - 1) * count}`;
+  pool.query(queryStr, (err, results) => {
+    callback(err, results);
+  });
 }
 const getInfo = (id, callback) => {
   var queryStr = `select * from products where id = ${id}`;

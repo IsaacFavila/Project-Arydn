@@ -1,7 +1,15 @@
 var models = require('./models.js');
 
 const getProducts = (req, res) => {
-  res.send('Products');
+  // res.send('Products');
+  models.getProducts(req.body.page, req.body.count, (err, products) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      console.log(products.rows);
+      res.status(200).json(products.rows);
+    }
+  })
 }
 
 const getInfo = (req, res) => {
