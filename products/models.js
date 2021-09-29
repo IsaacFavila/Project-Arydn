@@ -4,7 +4,7 @@ const getProducts = (page=1, count=5, callback) => {
 
 }
 const getInfo = (id, callback) => {
-  var queryStr = 'select * from products where id = 1';
+  var queryStr = `select * from products where id = ${id}`;
   // add features
   pool.query(queryStr, (err, results)  => {
     callback(err, results);
@@ -12,14 +12,14 @@ const getInfo = (id, callback) => {
 }
 
 const getStyles = (id, callback) => {
-  var queryStr = 'select * from styles where productId = 1';
+  var queryStr = `select * from styles where productId = ${id}`;
   // add photos and skus
   pool.query(queryStr, (err, results)  => {
     callback(err, results);
   });
 }
 const getRelated = (id, callback) => {
-  var queryStr = 'select * from related where current_product_id = 1';
+  var queryStr = `select * from related where current_product_id = ${id}`;
   pool.query(queryStr, (err, results)  => {
     callback(err, results);
   });
