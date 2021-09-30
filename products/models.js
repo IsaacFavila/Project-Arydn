@@ -42,36 +42,38 @@ const getStyles = (id, callback) => {
       results: []
     };
 
-    helperObj.results.push(results.rows[0]);
+  // Format and add all unique styles to helperObj.results
+    var helperArr = [];
+    for (var i = 0; i < results.rows.length; i++) {
+      var currentObj = results.rows[i];
+      if (!helperArr.includes(currentObj.styleid)) {
+        helperArr.push(currentObj.styleid);
+        // Format
+        delete currentObj.id;
+        delete currentObj.productid;
+        currentObj.style_id = currentObj.styleid;
+        delete currentObj.styleid;
+        if (currentObj.sale_price === 'null') {
+          currentObj.sale_price = 0;
+        }
+        currentObj['default?'] = currentObj.default_style;
+        delete currentObj.default_style;
+        // Add photos and skus
+        currentObj.photos = [];
+        var firstPhoto = {
+          thumbnail_url: currentObj.thumbnail_url,
+          url: currentObj.url
+        }
+        currentObj.photos.push(firstPhoto);
+        delete currentObj.thumbnail_url;
+        delete currentObj.url;
+        currentObj.skus = {};
+        // Push formatted object
+        helperObj.results.push(currentObj);
+      }
+    }
+
     console.log(helperObj.results);
-
-    // for (var i = 0; i < results.rows.length; i++) {
-    //   if (helperObj.results.length === 0) {
-    //     helperObj.results.push(results.rows[i]);
-    //   }
-    //   for (var j = 0; j < helperObj.results.length; j++) {
-    //     if (helperObj.results[j].styleid !== results.rows[i].styleid) {
-    //       var newStyle = results.rows[i]
-    //       helperObj.results.push(newStyle);
-    //     }
-    //   }
-    // }
-    // results.rows[0].photos = []
-    // var photo = {
-    //   thumbnail_url: results.rows[0].thumbnail_url,
-    //   url: results.rows[0].url
-    // };
-    // results.rows[0].photos.push(photo);
-
-    // results.rows[0]['default?'] = results.rows[0].default_style;
-    // results.rows[0]['style_id'] = results.rows[0].styleid;
-    // delete results.rows[0].thumbnail_url;
-    // delete results.rows[0].url;
-
-    // helperObj.results.push(results.rows[0]);
-
-
-
     callback(err, helperObj.results);
   });
 
@@ -86,8 +88,8 @@ const getRelated = (id, callback) => {
     for (var i = 0; i < results.rows.length; i++) {
       helperArr.push(results.rows[i].related_product_id);
     }
-    console.log(helperArr);
-    callback(err, helperArr);
+    console.log(helperArr.results);
+    callback(err, helperArr.results);
   });
 }
 
