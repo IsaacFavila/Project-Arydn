@@ -3,7 +3,6 @@ const pool = require('./db.js');
 const getProducts = (page=1, count=5, callback) => {
   var queryStr = `select * from products limit ${count} offset ${(page - 1) * count}`;
   pool.query(queryStr, (err, results) => {
-    console.log(results.rows);
     callback(err, results.rows);
   });
 }
@@ -27,7 +26,6 @@ const getInfo = (id, callback) => {
     delete helperObj.product_id;
     delete helperObj.feature;
     delete helperObj.value;
-    console.log(helperObj);
     callback(err, helperObj);
   });
 }
@@ -40,10 +38,10 @@ const getStyles = (id, callback) => {
       product_id: id,
       results: []
     };
-
-  // Format and add all unique styles to helperObj.results
     var helperArr = [];
     var urlArr = [];
+
+  // Format and add all unique styles to helperObj.results
     for (var i = 0; i < results.rows.length; i++) {
       var currentObj = results.rows[i];
       if (!helperArr.includes(currentObj.styleid)) {
@@ -118,7 +116,7 @@ const getStyles = (id, callback) => {
 
           var lastSkuKey = Number(Object.keys(currentStyle.skus)[Object.keys(currentStyle.skus).length - 1]);
 
-          if (newSku.quantity !== currentStyle.skus[lastSkuKey].quantity) {
+          if (newSku.size !== currentStyle.skus[lastSkuKey].size) {
             var newSkuId = lastSkuKey + 1;
             currentStyle.skus[newSkuId] = newSku;
           }
@@ -126,8 +124,6 @@ const getStyles = (id, callback) => {
         }
       }
     }
-
-    console.log(helperObj.results);
     callback(err, helperObj);
   });
 }
@@ -142,7 +138,6 @@ const getRelated = (id, callback) => {
     for (var i = 0; i < results.rows.length; i++) {
       helperArr.push(results.rows[i].related_product_id);
     }
-    console.log(helperArr.results);
     callback(err, helperArr.results);
   });
 }
