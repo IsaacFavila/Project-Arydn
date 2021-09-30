@@ -13,11 +13,13 @@ const connection = mysql.createConnection({
   database: 'reviewsdb'
 });
 
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
 
-const products = require('./products/db.js');
+const productRouter = require('./products/routes.js');
+app.use('/db', productRouter);
 
 app.get('/helloworld', function (req, res) {
   res.send('Hello World')
