@@ -167,9 +167,13 @@ exports.getAnswers = function (req, res) {
 
 // Add question for product
 exports.addQuestion = function (req, res) {
-  var body = req.body;
-  console.log('BODY:', body)
-  res.send('addQuestion')
+  model.addQuestion(req.body)
+    .then(success => {
+      res.send('should be 201');
+    })
+    .catch(err => {
+      console.log(err);
+    })
 };
 
 // Add answer for question

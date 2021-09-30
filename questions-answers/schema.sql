@@ -40,7 +40,7 @@ CREATE DATABASE questions_answers;
 DROP TABLE IF EXISTS questions CASCADE;
 
 CREATE TABLE questions (
-  question_id INTEGER NULL DEFAULT NULL,
+  question_id SERIAL,
   question_body TEXT NULL DEFAULT NULL,
   question_date VARCHAR NULL DEFAULT NULL,
   asker_name TEXT NULL DEFAULT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE questions (
 DROP TABLE IF EXISTS answers CASCADE;
 
 CREATE TABLE answers (
-  id INTEGER NULL DEFAULT NULL,
+  id SERIAL,
   body TEXT NULL DEFAULT NULL,
   date VARCHAR NULL DEFAULT NULL,
   answerer_name TEXT NULL DEFAULT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE answers (
 DROP TABLE IF EXISTS answerphotos CASCADE;
 
 CREATE TABLE answerphotos (
-  photo_id INTEGER NULL DEFAULT NULL,
+  photo_id SERIAL,
   url TEXT NULL DEFAULT NULL,
   answer_id INTEGER NULL DEFAULT NULL,
   PRIMARY KEY (photo_id)

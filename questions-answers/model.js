@@ -22,8 +22,10 @@ exports.getAnswers = (question_id, page, count) => {
 };
 
 
-exports.addQuestion = () => {
-
+exports.addQuestion = ({body, name, email, product_id}) => {
+  var queryString = 'INSERT INTO questions(question_id, question_body, question_date, asker_name, product_id, email, question_helpfulness) VALUES (((SELECT MAX(question_id) FROM questions) + 1), $1, CURRENT_TIMESTAMP, $2, $4, $3, 0)';
+  var queryParams = [body, name, email, product_id];
+  return db.query(queryString, queryParams);
 };
 
 exports.addAnswer = () => {

@@ -29,3 +29,11 @@ ORDER BY answers.id;
 
 -- condensed version:
 SELECT answers.id, answers.body, answers.date, answers.answerer_name, answers.helpfulness, answerphotos.photo_id, answerphotos.url FROM answers FULL OUTER JOIN answerphotos ON (answers.id = answerphotos.answer_id) WHERE answers.question_id = $1 AND answers.reported = false AND answers.id IN (SELECT DISTINCT answers.id FROM answers WHERE answers.reported = false AND answers.question_id = $1 ORDER BY answers.id LIMIT $2 OFFSET $3) ORDER BY answers.id;
+
+
+-- QUERY FOR addQuestion --
+INSERT INTO questions(question_id, question_body, question_date, asker_name, product_id, email, question_helpfulness)
+VALUES (((SELECT MAX(question_id) FROM questions) + 1), $1, CURRENT_TIMESTAMP, $2, $4, $3, 0)
+
+-- for testing:
+SELECT * FROM questions WHERE question_body IS "charles was here";
