@@ -1,40 +1,18 @@
 const express = require('express');
-const app = express();
-const mysql = require('mysql');
-
-const port = process.env.PORT || 3000;
-
 const morgan = require('morgan');
+const app = express();
 
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'password',
-  database: 'reviewsdb'
-});
-
-
-app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.set('port', process.env.PORT || 3000);
+app.use(express.json());
 app.use(morgan('dev'));
 
-const productRouter = require('./products/routes.js');
+const productRouter = require('./products/routes');
 app.use('/db', productRouter);
 
 app.get('/helloworld', function (req, res) {
-  res.send('Hello World')
+  // res.send('Hello World')
+  res.sendStatus(200);
 })
 
-app.get('/reviews', function (req, res) {
-  res.send('My Reviews')
-})
-
-app.get('/reviews/meta', function (req, res) {
-  res.send('Meta')
-})
-
-
-app.listen(port, () => {
-  console.log(`listening at http://localhost${port}`)
-})
-
+module.exports = app;

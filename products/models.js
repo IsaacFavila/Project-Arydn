@@ -1,4 +1,4 @@
-const pool = require('./db.js');
+const pool = require('./db');
 
 const getProducts = (page=1, count=5, callback) => {
   var queryStr = `select * from products limit ${count} offset ${(page - 1) * count}`;
