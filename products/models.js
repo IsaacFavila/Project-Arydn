@@ -35,7 +35,6 @@ const getInfo = (id, callback) => {
 const getStyles = (id, callback) => {
   var queryStr = `select * from styles s, photos p where s.productId = ${id} and p.styleID = s.id`;
   //  and sku.styleID = s.id;
-  // add photos and skus
   pool.query(queryStr, (err, results)  => {
     var helperObj = {
       product_id: id,
@@ -72,6 +71,22 @@ const getStyles = (id, callback) => {
         helperObj.results.push(currentObj);
       }
     }
+
+  // Add all photos to style id
+    for (var i = 0; i < helperObj.results.length; i++) {
+      var currentStyle = helperObj.results[i];
+      for (var j = 0; j < results.rows.length; j++) {
+        var currentObj = results.rows[j];
+        if (currentStyle.style_id === currentObj.styleid) {
+          var newPhoto = {
+            thumbnail_url: currentObj.thumbnail_url,
+            url: currentObj.url
+          }
+          currentStyle.photos.push(newPhoto);
+        }
+      }
+    }
+
 
     console.log(helperObj.results);
     callback(err, helperObj.results);
