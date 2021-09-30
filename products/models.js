@@ -138,7 +138,7 @@ const getRelated = (id, callback) => {
     for (var i = 0; i < results.rows.length; i++) {
       helperArr.push(results.rows[i].related_product_id);
     }
-    callback(err, helperArr.results);
+    callback(err, helperArr);
   });
 }
 
