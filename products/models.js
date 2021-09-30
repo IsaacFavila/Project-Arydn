@@ -33,7 +33,7 @@ const getInfo = (id, callback) => {
 }
 
 const getStyles = (id, callback) => {
-  var queryStr = `select * from styles s, photos p where s.productId = ${id} and p.styleID = s.id`;
+  var queryStr = `select * from styles s, photos p, skus sk where s.productId = ${id} and p.styleid = s.id and sk.styleid = s.id`;
   //  and sku.styleID = s.id;
   pool.query(queryStr, (err, results)  => {
     var helperObj = {
@@ -67,12 +67,18 @@ const getStyles = (id, callback) => {
         delete currentObj.thumbnail_url;
         delete currentObj.url;
         currentObj.skus = {};
+        currentObj.skus[0] = {
+          quantity: currentObj.quantity,
+          size: currentObj.size
+        };
+        delete currentObj.quantity;
+        delete currentObj.size;
         // Push formatted object
         helperObj.results.push(currentObj);
       }
     }
 
-  // Add all photos to style id
+  // Add all photos to corresponding style id
     for (var i = 0; i < helperObj.results.length; i++) {
       var currentStyle = helperObj.results[i];
       for (var j = 0; j < results.rows.length; j++) {
@@ -87,9 +93,25 @@ const getStyles = (id, callback) => {
       }
     }
 
+  // Add all skus to corresponding style id
+  for (var i = 0; i < helperObj.results.length; i++) {
+    var currentStyle = helperObj.results[i];
+    for (var j = 0; j < results.rows.length; j++) {
+      var currentObj = results.rows[j];
+      if (currentStyle.style_id === currentObj.styleid) {
+        var newSku = {
+          quantity: currentObj.quantity,
+          size: currentObj.size
+        };
+        var lastSkuKey = Object.keys(currentStyle.skus)[Object.keys(currentStyle.skus).length - 1];
+        var newSkuId = Number(lastSkuKey) + 1;
+        currentStyle.skus[newSkuId] = newSku;
+      }
+    }
+  }
 
     console.log(helperObj.results);
-    callback(err, helperObj.results);
+    callback(err, helperObj);
   });
 
 }
