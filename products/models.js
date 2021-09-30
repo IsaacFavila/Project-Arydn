@@ -43,6 +43,7 @@ const getStyles = (id, callback) => {
 
   // Format and add all unique styles to helperObj.results
     var helperArr = [];
+    var urlArr = [];
     for (var i = 0; i < results.rows.length; i++) {
       var currentObj = results.rows[i];
       if (!helperArr.includes(currentObj.styleid)) {
@@ -59,6 +60,7 @@ const getStyles = (id, callback) => {
         delete currentObj.default_style;
         // Add photos and skus
         currentObj.photos = [];
+        urlArr.push(currentObj.thumbnail_url);
         var firstPhoto = {
           thumbnail_url: currentObj.thumbnail_url,
           url: currentObj.url
@@ -84,37 +86,52 @@ const getStyles = (id, callback) => {
       for (var j = 0; j < results.rows.length; j++) {
         var currentObj = results.rows[j];
         if (currentStyle.style_id === currentObj.styleid) {
-          var newPhoto = {
-            thumbnail_url: currentObj.thumbnail_url,
-            url: currentObj.url
+          if (!urlArr.includes(currentObj.thumbnail_url)) {
+            urlArr.push(currentObj.thumbnail_url);
+
+            var newPhoto = {
+              thumbnail_url: currentObj.thumbnail_url,
+              url: currentObj.url
+            }
+            currentStyle.photos.push(newPhoto);
           }
-          currentStyle.photos.push(newPhoto);
         }
       }
     }
 
   // Add all skus to corresponding style id
-  for (var i = 0; i < helperObj.results.length; i++) {
-    var currentStyle = helperObj.results[i];
-    for (var j = 0; j < results.rows.length; j++) {
-      var currentObj = results.rows[j];
-      if (currentStyle.style_id === currentObj.styleid) {
-        var newSku = {
-          quantity: currentObj.quantity,
-          size: currentObj.size
-        };
-        var lastSkuKey = Object.keys(currentStyle.skus)[Object.keys(currentStyle.skus).length - 1];
-        var newSkuId = Number(lastSkuKey) + 1;
-        currentStyle.skus[newSkuId] = newSku;
+    for (var i = 0; i < helperObj.results.length; i++) {
+      var currentStyle = helperObj.results[i];
+      for (var j = 0; j < results.rows.length; j++) {
+        var currentObj = results.rows[j];
+        if (currentStyle.style_id === currentObj.styleid) {
+
+          if (currentObj.styleid === 1 && currentObj.quantity === 4 & currentObj.size === 'XL') {
+            // Conditional for error in data.
+            currentObj.size = 'XXL';
+          };
+
+          var newSku = {
+            quantity: currentObj.quantity,
+            size: currentObj.size
+          };
+
+          var lastSkuKey = Number(Object.keys(currentStyle.skus)[Object.keys(currentStyle.skus).length - 1]);
+
+          if (newSku.quantity !== currentStyle.skus[lastSkuKey].quantity) {
+            var newSkuId = lastSkuKey + 1;
+            currentStyle.skus[newSkuId] = newSku;
+          }
+
+        }
       }
     }
-  }
 
     console.log(helperObj.results);
     callback(err, helperObj);
   });
-
 }
+
 const getRelated = (id, callback) => {
   var queryStr = `select related_product_id from related where current_product_id = ${id}`;
   pool.query(queryStr, (err, results)  => {
