@@ -111,13 +111,58 @@ exports.getQuestions = function (req, res) {
     .catch(err => {
       console.log(err);
     })
+  }
 
 // Get answers for question
 exports.getAnswers = function (req, res) {
-  // how to handle a variable in url?
-  var body = req.body;
-  console.log('BODY:', body)
-  res.send('getAnswers')
+  var urlParams = new URLSearchParams(req.url.slice(req.url.indexOf('?')));
+  var count = urlParams.get('count');
+  var page = urlParams.get('page');
+  var sliceURL = req.url.slice(11)
+  var question_id = sliceURL.slice(0, sliceURL.indexOf('/'))
+
+  model.getAnswers(question_id, page, count)
+    .then(joinData => {
+      joinData = joinData.rows;
+      var data = {
+        question: question_id,
+        page: page,
+        count: count,
+      }
+
+      var results = [];
+      var answers = {};
+      for (var i = 0; i < joinData.length; i++) {
+        var currEntry = joinData[i];
+        if (!answers[currEntry.id]) {
+          answers[currEntry.id] = {
+            answer_id: currEntry.id,
+            body: currEntry.body,
+            date: currEntry.date,
+            answerer_name: currEntry.answerer_name,
+            helpfulness: currEntry.helpfulness
+          }
+        }
+        if (!answers[currEntry.id].photos) {
+          answers[currEntry.id].photos = [];
+        }
+        if (currEntry.photo_id) {
+          answers[currEntry.id].photos.push({
+            id: currEntry.photo_id,
+            url: currEntry.url
+          })
+        }
+      }
+      for (var answer in answers) {
+        results.push(answers[answer]);
+      }
+      data.results = results;
+      res.send(data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+
 };
 
 // Add question for product

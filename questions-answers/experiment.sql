@@ -16,3 +16,16 @@ AND questions.question_id IN (SELECT DISTINCT questions.question_id FROM questio
 ORDER BY questions.question_id;
 
 
+-- QUERY FOR getAnswers --
+SELECT answers.id, answers.body, answers.date, answers.answerer_name, answers.helpfulness, answerphotos.photo_id, answerphotos.url
+FROM answers
+FULL OUTER JOIN answerphotos
+ON (answers.id = answerphotos.answer_id)
+WHERE answers.question_id = 1
+AND answers.reported = false
+AND answers.id IN (SELECT DISTINCT answers.id FROM answers WHERE answers.reported = false AND answers.question_id = 1 ORDER BY answers.id LIMIT 3 OFFSET 0)
+ORDER BY answers.id;
+
+
+-- condensed version:
+SELECT answers.id, answers.body, answers.date, answers.answerer_name, answers.helpfulness, answerphotos.photo_id, answerphotos.url FROM answers FULL OUTER JOIN answerphotos ON (answers.id = answerphotos.answer_id) WHERE answers.question_id = $1 AND answers.reported = false AND answers.id IN (SELECT DISTINCT answers.id FROM answers WHERE answers.reported = false AND answers.question_id = $1 ORDER BY answers.id LIMIT $2 OFFSET $3) ORDER BY answers.id;

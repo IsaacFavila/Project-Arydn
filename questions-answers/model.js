@@ -15,15 +15,9 @@ exports.getQuestionsTwo = ({product_id, page, count}) => {
   return db.query(queryString, queryParams);
 };
 
-exports.getAnswerPhotos = (answer_id) => {
-  var queryString = 'SELECT id, url FROM answerphotos WHERE answer_id = $1';
-  var queryParams = [answer_id];
-  return db.query(queryString, queryParams);
-}
-
-exports.getAnswers = (question_id) => {
-  var queryString = 'SELECT id, body, date, answerer_name, helpfulness FROM answers WHERE question_id = $1 AND reported = false';
-  var queryParams = [question_id];
+exports.getAnswers = (question_id, page, count) => {
+  var queryString = 'SELECT answers.id, answers.body, answers.date, answers.answerer_name, answers.helpfulness, answerphotos.photo_id, answerphotos.url FROM answers FULL OUTER JOIN answerphotos ON (answers.id = answerphotos.answer_id) WHERE answers.question_id = $1 AND answers.reported = false AND answers.id IN (SELECT DISTINCT answers.id FROM answers WHERE answers.reported = false AND answers.question_id = $1 ORDER BY answers.id LIMIT $2 OFFSET $3) ORDER BY answers.id';
+  var queryParams = [question_id, count, page - 1];
   return db.query(queryString, queryParams);
 };
 
