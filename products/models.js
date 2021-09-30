@@ -33,11 +33,46 @@ const getInfo = (id, callback) => {
 }
 
 const getStyles = (id, callback) => {
-  var queryStr = `select * from styles where productId = ${id}`;
+  var queryStr = `select * from styles s, photos p where s.productId = ${id} and p.styleID = s.id`;
+  //  and sku.styleID = s.id;
   // add photos and skus
   pool.query(queryStr, (err, results)  => {
-    console.log(results.rows);
-    callback(err, results.rows);
+    var helperObj = {
+      product_id: id,
+      results: []
+    };
+
+    helperObj.results.push(results.rows[0]);
+    console.log(helperObj.results);
+
+    // for (var i = 0; i < results.rows.length; i++) {
+    //   if (helperObj.results.length === 0) {
+    //     helperObj.results.push(results.rows[i]);
+    //   }
+    //   for (var j = 0; j < helperObj.results.length; j++) {
+    //     if (helperObj.results[j].styleid !== results.rows[i].styleid) {
+    //       var newStyle = results.rows[i]
+    //       helperObj.results.push(newStyle);
+    //     }
+    //   }
+    // }
+    // results.rows[0].photos = []
+    // var photo = {
+    //   thumbnail_url: results.rows[0].thumbnail_url,
+    //   url: results.rows[0].url
+    // };
+    // results.rows[0].photos.push(photo);
+
+    // results.rows[0]['default?'] = results.rows[0].default_style;
+    // results.rows[0]['style_id'] = results.rows[0].styleid;
+    // delete results.rows[0].thumbnail_url;
+    // delete results.rows[0].url;
+
+    // helperObj.results.push(results.rows[0]);
+
+
+
+    callback(err, helperObj.results);
   });
 
 }
