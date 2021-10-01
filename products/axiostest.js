@@ -15,13 +15,13 @@ const axios = require('axios');
 //   .catch ((err) => {
 //     console.log(err);
 //   })
-axios.get('http://localhost:3000/db/products/1/styles')
-  .then((response) => {
-    console.log(response.data);
-  })
-  .catch ((err) => {
-    console.log(err);
-  })
+// axios.get('http://localhost:3000/db/products/1/styles')
+//   .then((response) => {
+//     console.log(response.data);
+//   })
+//   .catch ((err) => {
+//     console.log(err);
+//   })
 // axios.get('http://localhost:3000/db/products/1/related')
 //   .then((response) => {
 //     console.log(response.data);
