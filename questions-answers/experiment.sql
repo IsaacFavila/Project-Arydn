@@ -37,3 +37,17 @@ VALUES (((SELECT MAX(question_id) FROM questions) + 1), $1, CURRENT_TIMESTAMP, $
 
 -- for testing:
 SELECT * FROM questions WHERE question_body IS "charles was here";
+
+
+-- QUERY FOR addAnswer --
+INSERT INTO answers(id, body, date, answerer_name, helpfulness, question_id, email)
+VALUES (((SELECT MAX(id) FROM answers) + 1), $1, CURRENT_TIMESTAMP, $2, $3, $4, $5)
+RETURNING id;
+
+-- QUERY FOR addPhoto --
+INSERT INTO answerphotos(photo_id, url, answer_id)
+VALUES (((SELECT MAX(photo_id) FROM answerphotos) + 1), $1, $2);
+
+-- for testing:
+SELECT MAX(photo_id) FROM answerphotos;
+SELECT * FROM answerphotos WHERE photo_id = 2063760;
