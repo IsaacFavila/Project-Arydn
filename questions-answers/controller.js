@@ -1,63 +1,6 @@
 const model = require('./model.js');
 
-// // Get question list for product
-// exports.getQuestions = function (req, res) {
-//   model.getQuestions(req.body)
-//     .then(questionData => {
-//       var questions = questionData.rows;
-//       var answerPromises = [];
-//       for (var i = 0; i < questions.length; i++) {
-//         answerPromises.push(model.getAnswers(questions[i]['question_id']));
-//       }
-//       Promise.all(answerPromises)
-//         .then(answers => {
-//           for (var i = 0; i < answers.length; i++) {
-//             var answerObj = {};
-//             for (var j = 0; j < answers[i].rows.length; j++) {
-//               answers[i].rows[j].photos = ['charles'];
-//               answerObj[answers[i].rows[j].id] = answers[i].rows[j];
-//             }
-//             questions[i].answers = answerObj;
-//           }
-//           res.send({
-//             product_id: req.body.product_id,
-//             results: questions
-//           })
-//         //   return questions;
-//         // })
-//         // .then(questions => {
-//         //   for (var i = 0; i < questions.length; i++) {
-//         //     var answers = questions[i].answers;
-//         //     var photoPromises = [];
-//         //     for (var id in answers) {
-//         //       var answerPhotos = [];
-//         //       Promise.resolve(model.getAnswerPhotos(id))
-//         //         .then(photos => {
-//         //           answerPhotos.push(photos)
-//         //         })
-//         //     }
-//         //     Promise.all(photoPromises)
-//         //       .then(photos => {
-//         //         console.log('PHOTOS:', photos)
-//         //         for (var i = 0; i < photos.length; i++) {
-//         //           var photoArr = [];
-
-//         //         }
-//         //         res.send(photos)
-//         //       })
-//         //   }
-//         })
-
-//         .catch(err => {
-//           console.log(err);
-//         })
-//     })
-//     .catch(err => {
-//       console.log(err)
-//     })
-// };
-
-// TEST ANOTHER IDEA
+// Get question list for product
 exports.getQuestions = function (req, res) {
   model.getQuestions(req.body)
     .then(structure => {
@@ -118,8 +61,8 @@ exports.getAnswers = function (req, res) {
   var urlParams = new URLSearchParams(req.url.slice(req.url.indexOf('?')));
   var count = urlParams.get('count');
   var page = urlParams.get('page');
-  var sliceURL = req.url.slice(11)
-  var question_id = sliceURL.slice(0, sliceURL.indexOf('/'))
+  var sliceURL = req.url.slice(11);
+  var question_id = sliceURL.slice(0, sliceURL.indexOf('/'));
 
   model.getAnswers(question_id, page, count)
     .then(joinData => {
@@ -204,30 +147,43 @@ exports.addAnswer = function (req, res) {
     })
 };
 
-// Mark question as helpful
-exports.markQuestionHelpful = function (req, res) {
-  var body = req.body;
-  console.log('BODY:', body)
-  res.send('markQuestionHelpful')
-};
+// Mark question/answer as helpful/reported
+exports.markHelpfulOrReport = function (req, res) {
+  var table, idCol, idVal, incrementCol, sliceURL, queryString;
 
-// Report question
-exports.reportQuestion = function (req, res) {
-  var body = req.body;
-  console.log('BODY:', body)
-  res.send('reportQuestion')
-};
+  if (req.url.indexOf('questions') !== -1) {
+    table = 'questions';
+    idCol = 'question_id';
+    sliceURL = req.url.slice(11);
+    idVal = sliceURL.slice(0, sliceURL.indexOf('/'));
+    if (req.url.indexOf('helpful') !== -1) {
+      incrementCol = 'question_helpfulness';
+    } else {
+      incrementCol = 'reported';
+    }
+  } else {
+    table = 'answers';
+    idCol = 'id';
+    sliceURL = req.url.slice(9);
+    idVal = sliceURL.slice(0, sliceURL.indexOf('/'));
+    if (req.url.indexOf('helpful') !== -1) {
+      incrementCol = 'helpfulness';
+    } else {
+      incrementCol = 'reported';
+    }
+  }
 
-// Mark answer as helpful
-exports.markAnswerHelpful = function (req, res) {
-  var body = req.body;
-  console.log('BODY:', body)
-  res.send('markAnswerHelpful')
-};
+  if (incrementCol === 'reported') {
+    queryString = `UPDATE ${table} SET ${incrementCol} = true WHERE ${idCol} = ${idVal}`;
+  } else {
+    queryString = `UPDATE ${table} SET ${incrementCol} = ${incrementCol} + 1 WHERE ${idCol} = ${idVal}`;
+  }
 
-// Report answer
-exports.reportAnswer = function (req, res) {
-  var body = req.body;
-  console.log('BODY:', body)
-  res.send('reportAnswer')
+  model.markHelpfulOrReport(queryString)
+    .then(success => {
+      res.send(204);
+    })
+    .catch(err => {
+      console.log(err);
+    })
 };

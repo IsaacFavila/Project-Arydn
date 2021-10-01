@@ -51,3 +51,12 @@ VALUES (((SELECT MAX(photo_id) FROM answerphotos) + 1), $1, $2);
 -- for testing:
 SELECT MAX(photo_id) FROM answerphotos;
 SELECT * FROM answerphotos WHERE photo_id = 2063760;
+
+
+-- QUERY FOR markQuestionHelpful --
+UPDATE questions
+SET question_helpfulness = question_helpfulness + 1
+WHERE question_id = 1;
+
+-- testing:
+SELECT * FROM questions WHERE question_id = 1;

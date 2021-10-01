@@ -40,18 +40,6 @@ exports.addPhoto = (url, answer_id) => {
   return db.query(queryString, queryParams);
 };
 
-exports.markQuestionHelpful = () => {
-
-};
-
-exports.markAnswerHelpful = () => {
-
-};
-
-exports.reportQuestion = () => {
-
-};
-
-exports.reportAnswer = () => {
-
+exports.markHelpfulOrReport = (queryString) => {
+  return db.query(queryString);
 };
