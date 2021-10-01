@@ -11,12 +11,8 @@ app.use(morgan('dev'));
 const productRouter = require('./products/routes');
 app.use('/db', productRouter);
 
-const {reviewsRouter} = require('./reviews/routes.js');
-var db = require('./reviews/db_index.js');
-app.use('/', reviewsRouter);
-
 app.get('/helloworld', function (req, res) {
-  res.send('Hello World')
+  res.send('Hello world')
 })
 
 module.exports = app;
