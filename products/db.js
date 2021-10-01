@@ -11,10 +11,7 @@ const pool = new Pool({
 pool.connect(err => {
   if (err) {
   console.error('connection error', err.stack);
-  } else {
-  console.log('products database connected');
   }
 });
-
 
 module.exports = pool;
