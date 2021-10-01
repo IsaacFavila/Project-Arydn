@@ -1,48 +1,38 @@
+
 var models = require('./models.js');
 
-const get = (req, res) => {
-    console.log('REQ QUERY', req.query)
-    models.getAllReviews(req.body.count, req.body.page, function(error, reviews) {
-        console.log('REQ QUERY2', req.body)
-        if (error) console.log('GET ERROR', error);
-        // console.log('RESULTS', reviews)
-        res.json(reviews);
-    }) 
+exports.getAllReviews = (req, res) => {
+	models.getAllReviews(req.query.count, req.query.page, (error, results) => {
+		if (error) res.send(500).send(error);
+	
+		res.status(200).json(results)
+	}) 
 };
 
-const getMetaReview = (req, res) => {
-    models.getMetaReview(5, function(error, metaReviews) {
-        console.log('REQ BODY', req)
-        if (error) console.log('GET ERROR', error);
-        res.json(metaReviews);
-    })
+exports.getMetaReview = (req, res) => {
+	models.getMetaReview(req.query.id, (error, results) => {
+		if (error) res.send(500).send(error);
+		res.status(200).json(results)
+	})
 };
 
-const postReview = (req, res) => {
-    var params = [];
-    models.postReview(req.body, function(error, results) {
-        if (error) console.log('POST ERROR', error);
-        res.sendStatus(201);
-    })
+exports.postReview = (req, res) => {
+	models.postReview(req.body, function(error, results) {
+		if (error) console.log('POST ERROR', error);
+			res.sendStatus(201);
+	})
 };
 
-const putHelpful = (req, res) => {
-
-
-
-
+exports.updateHelpful = (req, res) => {
+	models.updateHelpful(req.body, function(error, results) {
+		if (error) console.log('POST ERROR', error);
+			res.sendStatus(204);
+	})
 };
 
-
-
-const putReported = (req, res) => {
-
-
-
+exports.updateReported = (req, res) => {
+	models.updateReported(req.body, function(error, results) {
+		if (error) console.log('POST ERROR', error);
+			res.sendStatus(204);
+	})
 };
-
-module.exports.get = get;
-module.exports.getMetaReview = getMetaReview;
-module.exports.postReview = postReview;
-module.exports.putHelpful = putHelpful;
-module.exports.putReported = putReported;

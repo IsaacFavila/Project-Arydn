@@ -7,7 +7,13 @@ const connection = mysql.createConnection({
     database: 'reviewsdb'
 });
 
-connection.connect();
+connection.connect(function(error) {
+  if(error) {
+		return console.log('Connection Error', error);
+	}
+
+	console.log('Connected to mySQL Server');
+});
 
 module.exports = connection;
   
