@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
+var bodyParser = require('body-parser');
 var db = require('./reviews/db_index.js');
 
 const port = process.env.PORT || 3000;
@@ -8,7 +9,7 @@ const port = process.env.PORT || 3000;
 const morgan = require('morgan');
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
 
 const {reviewsRouter} = require('./reviews/routes.js');

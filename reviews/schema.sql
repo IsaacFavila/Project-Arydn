@@ -1,54 +1,84 @@
-DROP DATABASE reviewsdb;
+DROP DATABASE IF EXISTS reviewsdb;
 CREATE DATABASE reviewsdb;
 USE reviewsdb;
 
 -- CREATE TABLE products (
---   product_id INT UNIQUE,
---   product_page INT NULL DEFAULT NULL,
---   product_count INT NULL DEFAULT NULL,
---   PRIMARY KEY (product_id)
+--   id INT AUTO_INCREMENT PRIMARY KEY,
+--   name VARCHAR(255) NULL DEFAULT NULL,
+--   slogan VARCHAR(255) NULL DEFAULT NULL,
+--   description VARCHAR(255) NULL DEFAULT NULL,
+--   category VARCHAR(255) NULL DEFAULT NULL,
+--   default_price INTEGER NULL DEFAULT NULL
 -- );
 
 CREATE TABLE reviews (
-  id INT UNIQUE,
-  product_id INT NULL DEFAULT NULL,
-  rating INT NULL DEFAULT NULL,
-  review_date BIGINT(20) NOT NULL,
-  summary VARCHAR(255) NULL DEFAULT NULL,
-  body VARCHAR(1000) NULL DEFAULT NULL,
-  recommend VARCHAR(255) NULL DEFAULT NULL,
-  reported VARCHAR(255) NULL DEFAULT NULL, 
-  reviewer_name VARCHAR(255) NULL DEFAULT NULL,
-  reviewer_email VARCHAR(255) NULL DEFAULT NULL,
-  response VARCHAR(255) NULL DEFAULT NULL,
-  helpfulness INT NULL DEFAULT NULL,
-  PRIMARY KEY (id)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  product_id INT,
+  rating INT,
+  review_date BIGINT(20),
+  summary VARCHAR(255),
+  body VARCHAR(1000),
+  recommend VARCHAR(255),
+  reported VARCHAR(255), 
+  reviewer_name VARCHAR(255),
+  reviewer_email VARCHAR(255),
+  response VARCHAR(255),
+  helpfulness INT,
+  INDEX reviews_pid_ind (product_id)
 );
 
-CREATE INDEX reviews_product_id_idx
-ON reviews (product_id);
+-- CREATE TABLE ExtimeStamp (
+--   review_dateTS TIMESTAMP NOT NULL,
+--   review_dateINT BIGINT(20) NOT NULL
+-- );
 
 CREATE TABLE characteristics (
-  id INT UNIQUE,
-  product_id INT NULL DEFAULT NULL,
-  char_name VARCHAR(50) NULL DEFAULT NULL,
-  PRIMARY KEY (id)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  product_id INT,
+  char_name VARCHAR(50),
+  FOREIGN KEY(product_id) REFERENCES reviews(id),
+  INDEX char_pid_ind (product_id)
 );
 
+-- INSERT INTO reviews (id, product_id, rating, review_date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)
+--  VALUES (1,1,5,1596080481467,"This product was great!","I really did or did not like this product based on whether it was sustainably sourced.  Then I found out that its made from nothing at all.",true,false,"funtime","first.last@gmail.com",null,8);
+
 CREATE TABLE characteristic_reviews (
-  id INT UNIQUE,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   characteristic_id INT NULL DEFAULT NULL,
   review_id INT NULL DEFAULT NULL,
   char_value VARCHAR(50) NULL DEFAULT NULL,
-  PRIMARY KEY (id)
+  FOREIGN KEY(characteristic_id) REFERENCES characteristics(id),
+  FOREIGN KEY(review_id) REFERENCES reviews(id),
+  INDEX char_pid_ind (characteristic_id)
 );
 
 CREATE TABLE reviews_photos (
-  id INT UNIQUE,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   review_id INT NULL DEFAULT NULL,
   photos_url VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (id)
+  FOREIGN KEY(review_id) REFERENCES reviews(id)
 );
+
+
+-- ---
+-- Foreign Keys
+-- ---
+
+-- ALTER TABLE characteristics ADD
+-- CONSTRAINT fk_characteristics_reviews_pid
+-- FOREIGN KEY (product_id) 
+-- REFERENCES reviews(product_id);
+-- ON UPDATE CASCADE
+-- ON DELETE RESTRICT;
+
+-- ALTER TABLE characteristic_reviews 
+-- ADD FOREIGN KEY (characteristic_id) 
+-- REFERENCES characteristics (id);
+
+-- ALTER TABLE reviews_photos 
+-- ADD FOREIGN KEY (review_id) 
+-- REFERENCES reviews (id);
 
 LOAD DATA INFILE '/Users/Shared/reviews.csv'
 INTO TABLE reviews
@@ -79,14 +109,6 @@ FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
-
--- ---
--- Foreign Keys
--- ---
-
--- ALTER TABLE characteristics ADD FOREIGN KEY (product_id) REFERENCES reviews (product_id);
--- ALTER TABLE characteristic_reviews ADD FOREIGN KEY (characteristic_id) REFERENCES characteristics (id);
--- ALTER TABLE reviews_photos ADD FOREIGN KEY (review_id) REFERENCES reviews (id);
 
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
 

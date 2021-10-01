@@ -1,18 +1,19 @@
 var db = require('./db_index.js');
 
-const getAllReviews = (callback) => {
-  var q = "SELECT * FROM reviews LIMIT 10";
+const getAllReviews = (count=5, page=1, callback) => {
+  var q = `SELECT * FROM reviews LIMIT ${page-1}, ${count}`;
   db.query(q, function(error, results) {
     if (error) console.log('GetAll ERROR', error);
-    console.log('RESULTS', results)
+    // console.log('RESULTS', results)
     callback(error, results);
   });
 };
 
-const getMetaReview = (callback) => {
-  // singleID
-  var q = "SELECT COUNT(*) AS count FROM reviews";
+const getMetaReview = (id, callback) => {
+  var q = `SELECT * FROM reviews WHERE product_id=${id}`;
   db.query(q, function(error, results) {
+    if (error) console.log('getMeta ERROR', error);
+    // console.log('RESULTS', results)
     callback(error, results);
   });
 }
@@ -20,7 +21,7 @@ const getMetaReview = (callback) => {
 
 const postReview = (params, callback) => {
 
-  // var q = "INSERT INTO reviews";
+  var q = "INSERT INTO reviews SET ";
 
 
 };
