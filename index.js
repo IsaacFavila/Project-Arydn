@@ -12,7 +12,7 @@ const productRouter = require('./products/routes');
 app.use('/db', productRouter);
 
 app.get('/helloworld', function (req, res) {
-  res.send('Hello world')
+  res.send('Hello world');
 })
 
 module.exports = app;

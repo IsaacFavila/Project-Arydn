@@ -1,7 +1,13 @@
 const models = require('./models');
 
 const getProducts = (req, res) => {
-  models.getProducts(req.body.page, req.body.count, (err, products) => {
+  if (req.url !== '/products') {
+    var urlParams = req.url.split('?').slice(1)[0].split('&');
+    var page = Number(urlParams[0].substring(urlParams[0].indexOf('=') + 1));
+    var count = Number(urlParams[1].substring(urlParams[1].indexOf('=') + 1));
+  }
+
+  models.getProducts(page, count, (err, products) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -11,7 +17,9 @@ const getProducts = (req, res) => {
 }
 
 const getInfo = (req, res) => {
-  models.getInfo(req.body.id, (err, info) => {
+  var urlParams = req.url.split('/');
+  var id = Number(urlParams[urlParams.length - 1]);
+  models.getInfo(id, (err, info) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -21,7 +29,9 @@ const getInfo = (req, res) => {
 }
 
 const getStyles = (req, res) => {
-  models.getStyles(req.body.id, (err, styles) => {
+  var urlParams = req.url.split('/');
+  var id = Number(urlParams[urlParams.length - 2]);
+  models.getStyles(id, (err, styles) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -31,7 +41,9 @@ const getStyles = (req, res) => {
 }
 
 const getRelated = (req, res) => {
-  models.getRelated(req.body.id, (err, related) => {
+  var urlParams = req.url.split('/');
+  var id = Number(urlParams[urlParams.length - 2]);
+  models.getRelated(id, (err, related) => {
     if (err) {
       res.status(500).send(err);
     } else {
