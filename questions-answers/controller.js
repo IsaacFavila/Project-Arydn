@@ -169,7 +169,7 @@ exports.getAnswers = function (req, res) {
 exports.addQuestion = function (req, res) {
   model.addQuestion(req.body)
     .then(success => {
-      res.send('should be 201');
+      res.send('success');
     })
     .catch(err => {
       console.log(err);
@@ -178,9 +178,30 @@ exports.addQuestion = function (req, res) {
 
 // Add answer for question
 exports.addAnswer = function (req, res) {
-  var body = req.body;
-  console.log('BODY:', body)
-  res.send('addAnswer')
+  var question_id = req.url.slice(11);
+  question_id = question_id.slice(0, question_id.indexOf('/'));
+  model.addAnswer(req.body, question_id)
+    .then(success => {
+      var answer_id = success.rows[0].id
+      if (req.body.photos) {
+        var photoPromises = [];
+        for (var i = 0; i < req.body.photos.length; i++) {
+          photoPromises.push(model.addPhoto(req.body.photos[i], answer_id));
+        }
+        Promise.all(photoPromises)
+          .then(success => {
+            res.send('success');
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      } else {
+        res.send([answer_id]);
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    })
 };
 
 // Mark question as helpful

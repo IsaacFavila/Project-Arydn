@@ -28,8 +28,16 @@ exports.addQuestion = ({body, name, email, product_id}) => {
   return db.query(queryString, queryParams);
 };
 
-exports.addAnswer = () => {
+exports.addAnswer = ({body, name, email, photos}, question_id) => {
+  var queryString = 'INSERT INTO answers(id, body, date, answerer_name, helpfulness, question_id, email) VALUES (((SELECT MAX(id) FROM answers) + 1), $1, CURRENT_TIMESTAMP, $2, $3, $4, $5) RETURNING id';
+  var queryParams = [body, name, 0, question_id, email];
+  return db.query(queryString, queryParams);
+};
 
+exports.addPhoto = (url, answer_id) => {
+  var queryString = 'INSERT INTO answerphotos(photo_id, url, answer_id) VALUES (((SELECT MAX(photo_id) FROM answerphotos) + 1), $1, $2)';
+  var queryParams = [url, answer_id];
+  return db.query(queryString, queryParams);
 };
 
 exports.markQuestionHelpful = () => {
