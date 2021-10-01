@@ -27,6 +27,9 @@ CREATE TABLE reviews (
   INDEX reviews_pid_ind (product_id)
 );
 
+ALTER TABLE reviews RENAME COLUMN id TO review_id;
+-- UPDATE reviews SET review_date=FROM_UNIXTIME(review_date / 1000);
+
 -- CREATE TABLE ExtimeStamp (
 --   review_dateTS TIMESTAMP NOT NULL,
 --   review_dateINT BIGINT(20) NOT NULL
@@ -36,7 +39,7 @@ CREATE TABLE characteristics (
   id INT AUTO_INCREMENT PRIMARY KEY,
   product_id INT,
   char_name VARCHAR(50),
-  FOREIGN KEY(product_id) REFERENCES reviews(id),
+  FOREIGN KEY(product_id) REFERENCES reviews(product_id),
   INDEX char_pid_ind (product_id)
 );
 
@@ -49,7 +52,7 @@ CREATE TABLE characteristic_reviews (
   review_id INT NULL DEFAULT NULL,
   char_value VARCHAR(50) NULL DEFAULT NULL,
   FOREIGN KEY(characteristic_id) REFERENCES characteristics(id),
-  FOREIGN KEY(review_id) REFERENCES reviews(id),
+  FOREIGN KEY(review_id) REFERENCES reviews(review_id),
   INDEX char_pid_ind (characteristic_id)
 );
 
@@ -57,7 +60,7 @@ CREATE TABLE reviews_photos (
   id INT AUTO_INCREMENT PRIMARY KEY,
   review_id INT NULL DEFAULT NULL,
   photos_url VARCHAR(255) NULL DEFAULT NULL,
-  FOREIGN KEY(review_id) REFERENCES reviews(id)
+  FOREIGN KEY(review_id) REFERENCES reviews(review_id)
 );
 
 
@@ -111,5 +114,8 @@ LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+
+
+
 
 -- mysql -u root -p schema.sql

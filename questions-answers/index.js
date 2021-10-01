@@ -1,9 +1,9 @@
-const {Pool, Client} = require('pg');
+const {Pool} = require('pg');
 
 const pool = new Pool({
-  user: 'isaacmfavila',
+  user: '',
   host: 'localhost',
-  database: 'products',
+  database: 'questions_answers',
   password: '',
   port: 5432
 });
@@ -11,6 +11,8 @@ const pool = new Pool({
 pool.connect(err => {
   if (err) {
   console.error('connection error', err.stack);
+  } else {
+  console.log('questions_answers database connected');
   }
 });
 
