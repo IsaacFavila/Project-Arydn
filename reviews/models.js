@@ -1,44 +1,64 @@
-var connection = require('./db_index.js');
+const db = require('./services/db');
+const helper = require('./helper');
+const config = require('./config');
 
-exports.getAllReviews = (count=5, page=1, callback) => {
-  var q = `SELECT review_id, rating, summary, recommend, response, body, FROM_UNIXTIME(review_date/1000) as date, reviewer_name, helpfulness 
-           FROM reviews 
-           ORDER BY Helpfulness DESC
-           LIMIT ${page-1}, ${count}`;
+async function getAllReviews(page=1) {
+  const offset = helper.getOffset(id, config.listPerPage);
+  const q = `SELECT review_id, rating, summary, recommend, response, body, FROM_UNIXTIME(review_date/1000) as date, reviewer_name, helpfulness 
+            FROM reviews 
+            ORDER BY Helpfulness DESC
+            LIMIT ?, ?`;
+  const rows = await db.query(q, [offset, config.listPerPage] );
+  const data = helper.emptyOrRows(rows);
+  const meta = {page};
 
-  // var queryParams = [product_id, count, page - 1];
-  connection.query(q, (error, results) => {
-    if (error) console.log('getAll Error', error);
-    console.log('getAll Result >>>>>>:', results[0]);
-    callback(error, results)
-  });    
-};
+  return {data, meta}
+}
 
+async function getMetaReview (id, page=1){
+  const offset = helper.getOffset(id, config.listPerPage);
+  const q = `SELECT reviews.product_id, reviews.rating as ratings, reviews.recommend as recommended, characteristics.char_name, characteristic_reviews.characteristic_id as id, characteristic_reviews.char_value as value
+            FROM characteristic_reviews 
+            INNER JOIN characteristics
+              ON characteristics.id = characteristic_reviews.characteristic_id 
+            INNER JOIN reviews
+              ON reviews.review_id = characteristic_reviews.review_id 
+            WHERE reviews.product_id=${id}
+            ORDER BY rating, characteristic_reviews.characteristic_id`
+  const rows = await db.query(q, [offset, config.listPerPage] );
+  const data = helper.emptyOrRows(rows);
+  const meta = {page};
 
+  return {data, meta}
+}
+  // const data = helper.emptyOrRows(rows);
+  // const meta = {id};
 
-exports.getMetaReview = (id, callback) => {
- 
-  var q = `SELECT reviews.product_id, reviews.rating as ratings, reviews.recommend as recommended, characteristics.char_name, characteristic_reviews.characteristic_id as id, characteristic_reviews.char_value as value
-          FROM characteristic_reviews 
-          INNER JOIN characteristics
-            ON characteristics.id = characteristic_reviews.characteristic_id 
-          INNER JOIN reviews
-            ON reviews.review_id = characteristic_reviews.review_id 
-          WHERE reviews.product_id=${id}
-          ORDER BY rating, characteristic_reviews.characteristic_id`;
+  // return {
+  //   data,
+  //   meta
+  // }
+  // var q = `SELECT reviews.product_id, reviews.rating as ratings, reviews.recommend as recommended, characteristics.char_name, characteristic_reviews.characteristic_id as id, characteristic_reviews.char_value as value
+  //         FROM characteristic_reviews 
+  //         INNER JOIN characteristics
+  //           ON characteristics.id = characteristic_reviews.characteristic_id 
+  //         INNER JOIN reviews
+  //           ON reviews.review_id = characteristic_reviews.review_id 
+  //         WHERE reviews.product_id=30
+  //         ORDER BY rating, characteristic_reviews.characteristic_id`;
                     
-  connection.query(q, function(error, results) {
-    if (error) console.log('getMetaCharacteristics Error', error);
-      console.log('getMeta Result >>>>>>>', results[0])
-      callback(error, results);
-   });
-};
+  // connection.query(q, function(error, results) {
+  //   if (error) console.log('getMetaCharacteristics Error', error);
+  //     console.log('getMeta Result >>>>>>>', results[0])
+  //     callback(error, results);
+  //  });
+// };
 
-exports.getMetaRatings = (id, callback) => {
+async function getMetaRatings (id) {
   var q = `SELECT rating, COUNT(*) 
           FROM reviews 
-          WHERE product_id=${id} 
-          GROUP BY rating;`;
+          WHERE product_id=30 
+          GROUP BY rating`;
                   
   connection.query(q, function(error, results) {
     if (error) console.log('getMetaRatings Error', error);
@@ -47,7 +67,7 @@ exports.getMetaRatings = (id, callback) => {
   });
 };
 
-exports.postReview = (q, callback) => {
+async function postReview (q) {
   var data = [
     //  [10, 4, 'Wow', 'SUPER DUPER', 'true', 'Bill', 'Billy@aol.com'],
     ];
@@ -60,7 +80,7 @@ exports.postReview = (q, callback) => {
   });
 };
 
-exports.updateHelpful = (id, callback) => {
+async function updateHelpful (id) {
 
   var q = `UPDATE reviews 
           SET helpfulness = helpfulness + 1 
@@ -73,7 +93,7 @@ exports.updateHelpful = (id, callback) => {
   });
 };
 
-exports.updateReported = (id, callback) => {
+async function updateReported (id) {
 
   var q = `UPDATE reviews 
           SET reported = helpfulness + 1 
@@ -84,4 +104,12 @@ exports.updateReported = (id, callback) => {
     // console.log('RESULTS', results)
     callback(error, results);
   });
+};
+
+module.exports = {
+  getAllReviews,
+	getMetaReview,
+	postReview,
+	updateHelpful,
+	updateReported
 };

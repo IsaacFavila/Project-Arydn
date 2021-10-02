@@ -28,12 +28,6 @@ CREATE TABLE reviews (
 );
 
 ALTER TABLE reviews RENAME COLUMN id TO review_id;
--- UPDATE reviews SET review_date=FROM_UNIXTIME(review_date / 1000);
-
--- CREATE TABLE ExtimeStamp (
---   review_dateTS TIMESTAMP NOT NULL,
---   review_dateINT BIGINT(20) NOT NULL
--- );
 
 CREATE TABLE characteristics (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,9 +36,6 @@ CREATE TABLE characteristics (
   FOREIGN KEY(product_id) REFERENCES reviews(product_id),
   INDEX char_pid_ind (product_id)
 );
-
--- INSERT INTO reviews (id, product_id, rating, review_date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)
---  VALUES (1,1,5,1596080481467,"This product was great!","I really did or did not like this product based on whether it was sustainably sourced.  Then I found out that its made from nothing at all.",true,false,"funtime","first.last@gmail.com",null,8);
 
 CREATE TABLE characteristic_reviews (
   id INT AUTO_INCREMENT PRIMARY KEY,

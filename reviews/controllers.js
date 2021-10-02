@@ -1,38 +1,61 @@
 
 var models = require('./models.js');
 
-exports.getAllReviews = (req, res) => {
-	models.getAllReviews(req.query.count, req.query.page, (error, results) => {
-		if (error) res.send(500).send(error);
-	
-		res.status(200).json(results)
-	}) 
+async function getAllReviews(req, res, next) {
+  try {
+		// console.log('REQ', req)
+    res.json(await models.getAllReviews(req.query.page));
+  } catch (error) {
+    console.error(`Error while getting allReviews `, error.message);
+    next(error);
+  }
 };
 
-exports.getMetaReview = (req, res) => {
-	models.getMetaReview(req.query.id, (error, results) => {
-		if (error) res.send(500).send(error);
-		res.status(200).json(results)
-	})
+async function getMetaReview(req, res, next) {
+	try {
+		console.log('REQ', req)
+    res.json(await models.getMetaReview(5));
+  } catch (error) {
+    console.error(`Error while getting allReviews `, error.message);
+    next(error);
+  }
+
+
+
+
+	// console.log('REQ', req.url)
+	// models.getMetaReview(req.query.id, (error, results) => {
+	// 	if (error) res.send(500).send(error);
+	// 	res.status(200).json(results)
+	// })
 };
 
-exports.postReview = (req, res) => {
+async function postReview(req, res) {
 	models.postReview(req.body, function(error, results) {
 		if (error) console.log('POST ERROR', error);
 			res.sendStatus(201);
+			res.redirect('/');
 	})
 };
 
-exports.updateHelpful = (req, res) => {
+async function updateHelpful(req, res) {
 	models.updateHelpful(req.body, function(error, results) {
 		if (error) console.log('POST ERROR', error);
 			res.sendStatus(204);
 	})
 };
 
-exports.updateReported = (req, res) => {
+async function updateReported(req, res) {
 	models.updateReported(req.body, function(error, results) {
 		if (error) console.log('POST ERROR', error);
 			res.sendStatus(204);
 	})
+};
+
+module.exports = {
+  getAllReviews,
+	getMetaReview,
+	postReview,
+	updateHelpful,
+	updateReported
 };
