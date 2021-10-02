@@ -10,6 +10,7 @@ const getProducts = (page=1, count=5, callback) => {
 const getInfo = (id, callback) => {
   var queryStr = `select * from products p, features f where p.id = ${id} and f.product_id = ${id}`;
   pool.query(queryStr, (err, results)  => {
+    console.log(results.rows);
     // Data formatting
     var helperObj = results.rows[0];
     helperObj.features = [];
@@ -129,16 +130,9 @@ const getStyles = (id, callback) => {
 }
 
 const getRelated = (id, callback) => {
-  var queryStr = `select related_product_id from related where current_product_id = ${id}`;
+  var queryStr = `select json_agg(related_product_id) from related where current_product_id = ${id}`;
   pool.query(queryStr, (err, results)  => {
-    // Data formatting
-    var helperArr =[];
-
-    // Push each object value to helperArr
-    for (var i = 0; i < results.rows.length; i++) {
-      helperArr.push(results.rows[i].related_product_id);
-    }
-    callback(err, helperArr);
+    callback(err, results.rows[0].json_agg);
   });
 }
 

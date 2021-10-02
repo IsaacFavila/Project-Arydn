@@ -1,4 +1,5 @@
 const models = require('./models');
+const promises = require('./promises');
 
 const getProducts = (req, res) => {
   if (req.url !== '/products') {
