@@ -16,9 +16,7 @@ const getProducts = (req, res) => {
 }
 
 const getInfo = (req, res) => {
-  var urlParams = req.url.split('/');
-  var id = Number(urlParams[urlParams.length - 1]);
-
+  var id = Number(req.params.product_id);
   models.getInfo(id, (err, info) => {
     if (err) {
       res.status(500).send(err);
@@ -29,9 +27,8 @@ const getInfo = (req, res) => {
 }
 
 const getStyles = (req, res) => {
-  var urlParams = req.url.split('/');
-  var id = Number(urlParams[urlParams.length - 2]);
-  models.getStyles(id, (err, styles) => {
+  var id = Number(req.params.product_id);
+  models.getStylesNew(id, (err, styles) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -41,8 +38,7 @@ const getStyles = (req, res) => {
 }
 
 const getRelated = (req, res) => {
-  var urlParams = req.url.split('/');
-  var id = Number(urlParams[urlParams.length - 2]);
+  var id = Number(req.params.product_id);
   models.getRelated(id, (err, related) => {
     if (err) {
       res.status(500).send(err);

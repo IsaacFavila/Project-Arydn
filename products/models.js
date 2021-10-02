@@ -8,22 +8,29 @@ const getProducts = (page=1, count=5, callback) => {
 }
 
 const getInfo = (id, callback) => {
-  // var queryStr = `select * from products left join features on products.id = features.product_id where products.id = ${id}`;
-  // pool.query(queryStr, (err, results)  => {
-  //   console.log(results.rows);
-  //   callback(err, results.rows);
-  // });
-
-  var queryStr = `select * from products where id = ${id}`;
+  //json build arr - feature, value
+  // group by - products id
+  var queryStr = `select products.*,
+  json_build_array(json_build_object('feature', features.feature, 'value', features.value))
+  from products
+  left join features
+  on products.id = features.product_id
+  where products.id = ${id}`;
   pool.query(queryStr, (err, results)  => {
-    var product = results.rows[0];
-
-    queryStr = `select feature, value from features f where f.product_id = ${id}`;
-    pool.query(queryStr, (err, results)  => {
-      product.features = results.rows
-      callback(err, product);
-    });
+    console.log(results.rows);
+    callback(err, results.rows);
   });
+
+  // var queryStr = `select * from products where id = ${id}`;
+  // pool.query(queryStr, (err, results)  => {
+  //   var product = results.rows[0];
+
+  //   queryStr = `select feature, value from features f where f.product_id = ${id}`;
+  //   pool.query(queryStr, (err, results)  => {
+  //     product.features = results.rows
+  //     callback(err, product);
+  //   });
+  // });
 }
 
 const getStyles = (id, callback) => {
@@ -124,6 +131,24 @@ const getStyles = (id, callback) => {
   });
 }
 
+const getStylesNew = (id, callback) => {
+  var queryStr = `select styles.*,
+  json_build_array(json_build_object('thumbnail_url', photos.thumbnail_url, 'url', photos.url))
+  from styles
+  left join photos
+  on styles.id = photos.styleId
+  where styles.productId = ${id} limit 2`;
+  pool.query(queryStr, (err, results) => {
+    var helperObj = {
+      product_id: id,
+      results: results.rows
+    }
+
+
+    callback(err, helperObj);
+  })
+}
+
 const getRelated = (id, callback) => {
   var queryStr = `select json_agg(related_product_id) from related where current_product_id = ${id}`;
   pool.query(queryStr, (err, results)  => {
@@ -135,6 +160,7 @@ module.exports = {
   getProducts,
   getInfo,
   getStyles,
+  getStylesNew,
   getRelated
 }
 
