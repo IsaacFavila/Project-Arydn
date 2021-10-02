@@ -2,8 +2,6 @@ DROP DATABASE IF EXISTS products;
 
 CREATE DATABASE products;
 
-\c products;
-
 -- ---
 -- Table 'products'
 --
