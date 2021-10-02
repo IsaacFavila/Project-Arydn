@@ -8,26 +8,21 @@ const getProducts = (page=1, count=5, callback) => {
 }
 
 const getInfo = (id, callback) => {
-  var queryStr = `select * from products p, features f where p.id = ${id} and f.product_id = ${id}`;
+  // var queryStr = `select * from products left join features on products.id = features.product_id where products.id = ${id}`;
+  // pool.query(queryStr, (err, results)  => {
+  //   console.log(results.rows);
+  //   callback(err, results.rows);
+  // });
+
+  var queryStr = `select * from products where id = ${id}`;
   pool.query(queryStr, (err, results)  => {
-    console.log(results.rows);
-    // Data formatting
-    var helperObj = results.rows[0];
-    helperObj.features = [];
-    // Push new feature to features
-    for (var i = 0; i < results.rows.length; i++) {
-      var newFeature = {
-        feature: results.rows[i].feature,
-        value: results.rows[i].value
-      };
-      helperObj.features.push(newFeature);
-    }
-    // More formatting to match API
-    helperObj.id = helperObj.product_id;
-    delete helperObj.product_id;
-    delete helperObj.feature;
-    delete helperObj.value;
-    callback(err, helperObj);
+    var product = results.rows[0];
+
+    queryStr = `select feature, value from features f where f.product_id = ${id}`;
+    pool.query(queryStr, (err, results)  => {
+      product.features = results.rows
+      callback(err, product);
+    });
   });
 }
 

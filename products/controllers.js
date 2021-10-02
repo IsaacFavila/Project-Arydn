@@ -2,12 +2,10 @@ const models = require('./models');
 const promises = require('./promises');
 
 const getProducts = (req, res) => {
-  if (req.url !== '/products') {
-    var urlParams = req.url.split('?').slice(1)[0].split('&');
-    var page = Number(urlParams[0].substring(urlParams[0].indexOf('=') + 1));
-    var count = Number(urlParams[1].substring(urlParams[1].indexOf('=') + 1));
+  if (Object.keys(req.query).length) {
+    var page = Number(req.query.page);
+    var count = Number(req.query.count);
   }
-
   models.getProducts(page, count, (err, products) => {
     if (err) {
       res.status(500).send(err);
@@ -20,6 +18,7 @@ const getProducts = (req, res) => {
 const getInfo = (req, res) => {
   var urlParams = req.url.split('/');
   var id = Number(urlParams[urlParams.length - 1]);
+
   models.getInfo(id, (err, info) => {
     if (err) {
       res.status(500).send(err);

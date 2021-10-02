@@ -12,7 +12,23 @@ const getProducts = (page=1, count=5, callback) => {
 }
 
 const getInfo = (id, callback) => {
-
+  var queryStr = `select * from products where id = ${id}`;
+  pool.query(queryStr)
+    .then((response) => {
+      var product = results.rows[0];
+      queryStr = `select feature, value from features f where f.product_id = ${id}`;
+      pool.query(queryStr)
+        .then((response) => {
+          product.features = results.rows
+          res.send(product);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 }
 
 const getStyles = (id, callback) => {
