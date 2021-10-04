@@ -13,26 +13,7 @@ CREATE DATABASE questions_answers;
 
 
 -- --------------------------------
--- CREATE HELPER TABLES -----------
--- --------------------------------
-
--- -- PRODUCTS -----------------------
-
--- DROP TABLE IF EXISTS productshelper CASCADE;
-
--- CREATE TABLE productshelper (
---   id INTEGER NULL DEFAULT NULL,
---   name TEXT NULL DEFAULT NULL,
---   slogan TEXT NULL DEFAULT NULL,
---   description TEXT NULL DEFAULT NULL,
---   category TEXT NULL DEFAULT NULL,
---   default_price INTEGER NULL DEFAULT NULL,
---   empty_column TEXT NULL DEFAULT NULL,
---   PRIMARY KEY (id)
--- );
-
--- --------------------------------
--- CREATE ACTUAL TABLES -----------
+-- CREATE TABLES ------------------
 -- --------------------------------
 
 -- QUESTIONS ----------------------
@@ -78,16 +59,6 @@ CREATE TABLE answerphotos (
   PRIMARY KEY (photo_id)
 );
 
--- -- PRODUCTS -----------------------
-
--- DROP TABLE IF EXISTS products CASCADE;
-
--- CREATE TABLE products (
---   product_id INTEGER NULL DEFAULT NULL,
---   PRIMARY KEY (product_id)
--- );
-
-
 -- --------------------------------
 -- POPULATE TABLES ----------------
 -- --------------------------------
@@ -107,9 +78,6 @@ ALTER TABLE questions ALTER COLUMN reported DROP DEFAULT;
 ALTER TABLE questions ALTER reported TYPE bool USING CASE WHEN reported='0' THEN FALSE ELSE TRUE END;
 ALTER TABLE questions ALTER COLUMN reported SET DEFAULT FALSE;
 
--- -- Show in terminal
--- SELECT * FROM questions;
-
 
 -- ANSWERS ------------------------
 
@@ -126,36 +94,10 @@ ALTER TABLE answers ALTER COLUMN reported DROP DEFAULT;
 ALTER TABLE answers ALTER reported TYPE bool USING CASE WHEN reported='0' THEN FALSE ELSE TRUE END;
 ALTER TABLE answers ALTER COLUMN reported SET DEFAULT FALSE;
 
--- -- Show in terminal
--- SELECT * FROM answers;
-
-
 -- ANSWER PHOTOS ------------------
 
 -- Copy all CSV data into table
 \COPY  answerphotos (photo_id, answer_id, url) FROM '../data/answers_photos.csv' DELIMITER ',' CSV HEADER;
-
--- -- Show in terminal
--- SELECT * FROM answerphotos;
-
-
--- -- PRODUCTS -----------------------
-
--- -- Copy all CSV data into table
--- \COPY productshelper (id, name, slogan, description, category, default_price, empty_column) FROM '../data/products_sample.csv' DELIMITER ',' CSV HEADER;
-
--- -- Export only the ID column to a CSV
--- \COPY productshelper (id) TO '../data/products_sample_ids.csv' DELIMITER ',' CSV HEADER;
-
--- -- Delete productshelper table
--- DROP TABLE IF EXISTS productshelper CASCADE;
-
--- -- Copy CSV of IDs into products table
--- \COPY products (product_id) FROM '../data/products_sample_ids.csv' DELIMITER ',' CSV HEADER;
-
--- -- Show in terminal
--- SELECT * FROM products;
-
 
 -- --------------------------------
 -- FOREIGN KEYS -------------------
@@ -163,5 +105,11 @@ ALTER TABLE answers ALTER COLUMN reported SET DEFAULT FALSE;
 
 ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (question_id);
 ALTER TABLE answerphotos ADD FOREIGN KEY (answer_id) REFERENCES answers (id);
--- ALTER TABLE questions ADD FOREIGN KEY (product_id) REFERENCES products (product_id);
--- ---
+
+-- --------------------------------
+-- INDICES ------------------------
+-- --------------------------------
+
+CREATE INDEX idx_questions_product_id ON questions(product_id);     -- to speed up getQuestions
+CREATE INDEX idx_answerphotos_answer_id ON answerphotos(answer_id); -- to speed up getQuestionsTwo
+CREATE INDEX idx_answers_question_id ON answers(question_id);       -- to speed up getQuestionsTwo & getAnswers
