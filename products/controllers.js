@@ -1,5 +1,5 @@
 const models = require('./models');
-const promises = require('./promises');
+const pool = require('./db');
 
 const getProducts = (req, res) => {
   if (Object.keys(req.query).length) {

@@ -8,34 +8,19 @@ const getProducts = (page=1, count=5, callback) => {
 }
 
 const getInfo = (id, callback) => {
-  //json build arr - feature, value
-  // group by - products id
-  var queryStr = `select products.*,
-  json_build_array(json_build_object('feature', features.feature, 'value', features.value))
-  from products
-  left join features
-  on products.id = features.product_id
-  where products.id = ${id}`;
+  var queryStr = `select * from products where id = ${id}`;
   pool.query(queryStr, (err, results)  => {
-    console.log(results.rows);
-    callback(err, results.rows);
+    var product = results.rows[0];
+    queryStr = `select feature, value from features f where f.product_id = ${id}`;
+    pool.query(queryStr, (err, results)  => {
+      product.features = results.rows
+      callback(err, product);
+    });
   });
-
-  // var queryStr = `select * from products where id = ${id}`;
-  // pool.query(queryStr, (err, results)  => {
-  //   var product = results.rows[0];
-
-  //   queryStr = `select feature, value from features f where f.product_id = ${id}`;
-  //   pool.query(queryStr, (err, results)  => {
-  //     product.features = results.rows
-  //     callback(err, product);
-  //   });
-  // });
 }
 
 const getStyles = (id, callback) => {
   var queryStr = `select * from styles s, photos p, skus sk where s.productId = ${id} and p.styleid = s.id and sk.styleid = s.id`;
-  //  and sku.styleID = s.id;
   pool.query(queryStr, (err, results)  => {
     var helperObj = {
       product_id: id,
