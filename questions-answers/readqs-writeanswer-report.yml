@@ -1,0 +1,49 @@
+config:
+  target: "http://localhost:3000/qa"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: Warm up
+    - duration: 120
+      arrivalRate: 5
+      rampTo: 50
+      name: Ramp up load
+    - duration: 600
+      arrivalRate: 50
+      name: Sustained load
+  payload:
+    - path: "artillery_question_sample.csv"
+      fields:
+        - "id"
+        - "product_id"
+        - "date_written"
+        - "asker_name"
+        - "asker_email"
+        - "reported"
+        - "helpful"
+    - path: "artillery_answer_sample.csv"
+      fields:
+        - "question_id"
+        - "id"
+        - "body"
+        - "date_written"
+        - "answerer_name"
+        - "answerer_email"
+        - "reported"
+        - "helpful"
+
+scenarios:
+  - name: "GET questions POST answer"
+    flow:
+      - get:
+          url: "/questions"
+          #json:
+           # product_id: "{{product_id}}"
+      - think: 5
+      - post:
+          url: "/questions/{{question_id}}/answers"
+          json:
+            body: "{{ body }}"
+            name: "{{ answerer_name }}"
+            email: "{{ answerer_email }}"
+            photos:
