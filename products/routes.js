@@ -1,6 +1,5 @@
-var controller = require('./controllers');
-var router = require('express').Router();
 var promise = require('./promises');
+var router = require('express').Router();
 
 router.get('/products', promise.getProducts);
 router.get('/products/:product_id', promise.getInfo);
