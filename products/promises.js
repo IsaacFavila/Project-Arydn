@@ -1,48 +1,55 @@
 const pool = require('./db');
 
-const getProducts = (page=1, count=5, callback) => {
+const getProducts = (req, res) => {
+  if (Object.keys(req.query).length) {
+    var page = Number(req.query.page);
+    var count = Number(req.query.count);
+  }
   var queryStr = `select * from products limit ${count} offset ${(page - 1) * count}`;
   pool.query(queryStr)
-    .then((response) => {
-      res.send(response.rows);
+    .then({rows} => {
+      res.status(200).json(rows);
     })
-    .catch((err) => {
-      console.log(err);
+    .catch(err => {
+      res.status(500).send(err);
     })
 }
 
-const getInfo = (id, callback) => {
+const getInfo = (req, res) => {
+  var id = Number(req.params.product_id);
   var queryStr = `select * from products where id = ${id}`;
   pool.query(queryStr)
-    .then((response) => {
-      var product = results.rows[0];
+    .then({rows} => {
+      var product = rows[0];
       queryStr = `select feature, value from features f where f.product_id = ${id}`;
       pool.query(queryStr)
-        .then((response) => {
-          product.features = results.rows
-          res.send(product);
+        .then({rows} => {
+          product.features = rows
+          res.status(200).json(product);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(err => {
+          res.status(500).send(err);
         })
     })
-    .catch((err) => {
-      console.log(err);
+    .catch(err => {
+      res.status(500).send(err);
     })
 }
 
-const getStyles = (id, callback) => {
+const getStyles = (req, res) => {
+  var id = Number(req.params.product_id);
 
 }
 
-const getRelated = (id, callback) => {
+const getRelated = (req, res) => {
+  var id = Number(req.params.product_id);
   var queryStr = `select json_agg(related_product_id) from related where current_product_id = ${id}`;
   pool.query(queryStr)
-    .then((response) => {
-      res.send(response.rows[0].json_agg);
+    .then({rows} => {
+      res.status(200).json(rows[0].json_agg);
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).send(err);
     })
 }
 
