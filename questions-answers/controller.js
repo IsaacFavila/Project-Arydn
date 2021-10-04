@@ -112,7 +112,7 @@ exports.getAnswers = function (req, res) {
 exports.addQuestion = function (req, res) {
   model.addQuestion(req.body)
     .then(success => {
-      res.send('success');
+      res.sendStatus(201);
     })
     .catch(err => {
       console.log(err);
@@ -133,7 +133,7 @@ exports.addAnswer = function (req, res) {
         }
         Promise.all(photoPromises)
           .then(success => {
-            res.send('success');
+            res.sendStatus(201);
           })
           .catch(err => {
             console.log(err);
@@ -181,7 +181,7 @@ exports.markHelpfulOrReport = function (req, res) {
 
   model.markHelpfulOrReport(queryString)
     .then(success => {
-      res.send(204);
+      res.sendStatus(204);
     })
     .catch(err => {
       console.log(err);
