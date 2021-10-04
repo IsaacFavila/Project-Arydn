@@ -106,18 +106,21 @@ ALTER TABLE photos ADD FOREIGN KEY (styleId) REFERENCES styles (id);
 ALTER TABLE skus ADD FOREIGN KEY (styleId) REFERENCES styles (id);
 
 -- ---
--- Test Data
+-- Populate tables
 -- ---
+\COPY products FROM '/Users/isaacmfavila/Downloads/product.csv' delimiter ',' csv header;
+\COPY related FROM '/Users/isaacmfavila/Downloads/related.csv' delimiter ',' csv header;
+\COPY styles FROM '/Users/isaacmfavila/Downloads/styles.csv' delimiter ',' csv header;
+\COPY features FROM '/Users/isaacmfavila/Downloads/features.csv' delimiter ',' csv header;
+\COPY photos FROM '/Users/isaacmfavila/Downloads/photos.csv' delimiter ',' csv header;
+\COPY skus FROM '/Users/isaacmfavila/Downloads/skus.csv' delimiter ',' csv header;
 
--- INSERT INTO `products` (`id`,`name`,`slogan`,`description`,`category`,`default_price`) VALUES
--- ('','','','','','');
--- INSERT INTO `related` (`id`,`product_id`) VALUES
--- ('','');
--- INSERT INTO `styles` (`id`,`name`,`original_price`,`sale_price`,`default`,`product_id`) VALUES
--- ('','','','','','');
--- INSERT INTO `features` (`id`,`feature`,`value`,`product_id`) VALUES
--- ('','','','');
--- INSERT INTO `photos` (`id`,`thumbnail`,`url`,`style_id`) VALUES
--- ('','','','');
--- INSERT INTO `skus` (`id`,`quantity`,`size`,`style_id`) VALUES
--- ('','','','');
+-- ---
+-- Indices
+-- ---
+CREATE INDEX related_current_product_id ON related(current_product_id);
+CREATE INDEX features_product_id ON features(product_id);
+CREATE INDEX styles_product_id ON styles(productId);
+CREATE INDEX photos_style_id ON photos(styleId);
+CREATE INDEX skus_style_id ON skus(styleId);
+
