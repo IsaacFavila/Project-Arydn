@@ -16,10 +16,8 @@ app.use('/qa', qaRouter);
 
 const reviewsRouter = require('./reviews/routes.js');
 app.use('/', reviewsRouter);
-  
-// const {reviewsRouter} = require('./reviews/routes.js');
-// app.use('/', reviewsRouter);
 
+  
 app.get('/helloworld', function (req, res) {
   res.send('Hello world');
 })

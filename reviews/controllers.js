@@ -1,54 +1,127 @@
 
 var models = require('./models.js');
 
-async function getAllReviews(req, res, next) {
-  try {
-		// console.log('REQ', req)
-    res.json(await models.getAllReviews(req.query.page));
-  } catch (error) {
-    console.error(`Error while getting allReviews `, error.message);
-    next(error);
-  }
-};
+const getAllReviews = async (req, res) => {
+	
+  let product_id = req.query.product_id;
+  let photosArr = [];
+  let results = [];
+  let result = {};
+  // console.log('pID', product_id)
+  
+  models.getAllReviews(product_id)
+  .then(data => {
+    // result.push(data)
+    // console.log('Data', data)
+    for (let i=0; i<data.length; i++) {
+      let currentReview = data[i];
+      // console.log('Current', currentReview)
 
-async function getMetaReview(req, res, next) {
-	try {
-		console.log('REQ', req)
-    res.json(await models.getMetaReview(5));
-  } catch (error) {
-    console.error(`Error while getting allReviews `, error.message);
-    next(error);
-  }
-
-
-
-
-	// console.log('REQ', req.url)
-	// models.getMetaReview(req.query.id, (error, results) => {
-	// 	if (error) res.send(500).send(error);
-	// 	res.status(200).json(results)
+			results.push({
+				"review_id" : data[i].review_id,
+				"rating" : data[i].rating,
+				"summary" : data[i].summary,
+				"recommend" : data[i].recommend,
+				"response" : data[i].response,
+				"body" : data[i].body,
+				"date" : data[i].date,
+				"reviewer_name" : data[i].reviewer_name,
+				"helpfulness" : data[i].helpfulness,
+				"photos" : []
+			})
+		}
+		res.send(results)
+	})
+  .catch((error) =>  {
+    console.log('Error ', error)
+    res.send(400);
+  })  
+	// await models.getPhotos(results["review_id"])
+	// 	.then(photosData => {
+	// 		console.log('photosData', photosData)
 	// })
+	//   for (let j=0; j < photosData.length; j++) {
+	// 		let current = photosData[j];
+	// 		photosArr.push(current)
+	// 	}
+	// 	Promise.all(photosArr)
+	// 	.then(result => {
+	// 		// console.log('result', result)
+	// res.send(results)
 };
 
-async function postReview(req, res) {
-	models.postReview(req.body, function(error, results) {
-		if (error) console.log('POST ERROR', error);
-			res.sendStatus(201);
-			res.redirect('/');
+const getMetaReview = async (req, res) => {
+	// console.log('Query' , req.query.product_id)
+  let product_id = req.query.product_id;
+  let ratings = {
+    "1" : 0,
+    "2" : 0,
+    "3" : 0,
+    "4" : 0,
+    "5" : 0
+  };
+  let recommended = {
+    "0" : 0,
+    "1" : 0
+  };
+  let characteristics = {
+    "Size":{},
+    "Width":{},
+    "Comfort":{},
+    "Quality":{}
+  };
+  await models.getMetaReview(product_id)
+  .then(data => {
+    // console.log('DATA: ', data)
+    data.map((review) => {
+      // console.log('Reviews: ', review)
+      ratings[review.ratings] ++;
+      review.recommended === 'true' ? recommended["1"] +=1 : recommended["0"] +=1
+    })
+  })
+  await models.getMetaRatings(product_id)
+  .then(data => {
+    for (let j = 0; j < data.length; j++) {
+      let currentName = data[j].char_name;
+      characteristics[currentName] = {
+        "id" : data[j].id,
+        "value" : data[j].value.toPrecision(5)
+      }
+    }
+  })
+    let result = {
+      "product_id" : product_id,
+      "ratings" : ratings,
+      "recommended" : recommended,
+      "characteristics" : characteristics
+    }
+    res.send(result);
+};
+
+const postReview = async (req, res) => {
+	// console.log('REQ', req.url);
+	await models.postReview(req.body)
+	res.sendStatus(201);
+	console.log('Message sent')
+};
+
+const updateHelpful = async (req, res) => {
+	await models.updateHelpful(req.body)
+	.then(result => {
+		res.sendStatus(204);
+	}) 
+	.catch(error => {
+		console.log('Error', error)
 	})
 };
 
-async function updateHelpful(req, res) {
-	models.updateHelpful(req.body, function(error, results) {
-		if (error) console.log('POST ERROR', error);
-			res.sendStatus(204);
-	})
-};
-
-async function updateReported(req, res) {
-	models.updateReported(req.body, function(error, results) {
-		if (error) console.log('POST ERROR', error);
-			res.sendStatus(204);
+const updateReported = async (req, res) => {
+	await models.updateReported(req.body)
+	.then(result => {
+		res.sendStatus(204);
+	}) 
+	.catch(error => {
+		console.log('Error', error)
 	})
 };
 
