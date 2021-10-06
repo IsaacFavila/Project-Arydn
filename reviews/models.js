@@ -23,29 +23,29 @@ const getPhotos = async (id) => {
 };
 
 const getMetaReview = async (id) => {
-  let q = `SELECT reviews.product_id, reviews.rating as ratings, reviews.recommend as recommended, characteristics.char_name, characteristic_reviews.characteristic_id as id, characteristic_reviews.char_value as value
+  let q = `SELECT reviews.product_id, reviews.rating as ratings, reviews.recommend as recommended, characteristics.char_name, characteristic_reviews.characteristic_id, characteristic_reviews.char_value as value
           FROM characteristic_reviews 
           INNER JOIN characteristics
             ON characteristics.id = characteristic_reviews.characteristic_id 
           INNER JOIN reviews
             ON reviews.review_id = characteristic_reviews.review_id 
-          WHERE reviews.product_id=${id}
+          WHERE reviews.product_id=5
           ORDER BY rating, characteristic_reviews.characteristic_id`;
   let params = [id]
   return db.query(q, params );
 };
 
 const getMetaRatings = async (id) => {
-  let q = `SELECT reviews.product_id, characteristics.char_name, characteristic_reviews.characteristic_id as id, AVG(characteristic_reviews.char_value) as value
+  let q = `SELECT reviews.product_id, characteristics.char_name, ANY_VALUE(characteristic_reviews.characteristic_id) as id, AVG(characteristic_reviews.char_value) as value
           FROM characteristic_reviews 
           INNER JOIN characteristics
             ON characteristics.id = characteristic_reviews.characteristic_id 
           INNER JOIN reviews
             ON reviews.review_id = characteristic_reviews.review_id 
-          WHERE reviews.product_id=${id}
-          GROUP BY characteristics.char_name`;
+          WHERE reviews.product_id=4
+          ORDER BY characteristics.char_name`;
   let params = [id]
-  return db.query(q, params );
+  return db.query(q, params);
 };
 
 const postReview = async ({product_id, rating, summary, body, recommend, reviewer_name, reviewer_email}) => {
@@ -56,11 +56,11 @@ const postReview = async ({product_id, rating, summary, body, recommend, reviewe
   return db.query(q, params );
 };
 
-const updateHelpful = async (id, reviews) => {
+const updateHelpful = async (id, {helpfulness}) => {
   let q = `UPDATE reviews 
-          SET helpfulness = ? + 1 
-          WHERE review_id=?`; 
-  let result = await db.query(q, [reviews.helpfulness, id]); 
+          SET helpfulness = ${helpfulness} + 1 
+          WHERE review_id=${id}`; 
+  let result = await db.query(q, [helpfulness, id]); 
   
   let  message;
   if (result.affectedRows) {

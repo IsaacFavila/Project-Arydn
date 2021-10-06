@@ -15,39 +15,35 @@ const getAllReviews = async (req, res) => {
     // console.log('Data', data)
     for (let i=0; i<data.length; i++) {
       let currentReview = data[i];
-      // console.log('Current', currentReview)
-
-			results.push({
-				"review_id" : data[i].review_id,
-				"rating" : data[i].rating,
-				"summary" : data[i].summary,
-				"recommend" : data[i].recommend,
-				"response" : data[i].response,
-				"body" : data[i].body,
-				"date" : data[i].date,
-				"reviewer_name" : data[i].reviewer_name,
-				"helpfulness" : data[i].helpfulness,
-				"photos" : []
-			})
+      console.log('Current', currentReview)
+      // models.getPhotos(currentReview.review_id)
+      // .then(data => {
+      //   Promise.all(results)
+      //   .then(photo => {
+          
+      //     console.log('data', data)
+        results.push({
+          "review_id" : data[i].review_id,
+          "rating" : data[i].rating,
+          "summary" : data[i].summary,
+          "recommend" : data[i].recommend,
+          "response" : data[i].response,
+          "body" : data[i].body,
+          "date" : data[i].date,
+          "reviewer_name" : data[i].reviewer_name,
+          "helpfulness" : data[i].helpfulness,
+          "photos" : []
+        // })
+      // })
+      })
 		}
+    // console.log('Results', results)
 		res.send(results)
 	})
   .catch((error) =>  {
-    console.log('Error ', error)
-    res.send(400);
+    console.log('Error ')
+    res.sendStatus(400);
   })  
-	// await models.getPhotos(results["review_id"])
-	// 	.then(photosData => {
-	// 		console.log('photosData', photosData)
-	// })
-	//   for (let j=0; j < photosData.length; j++) {
-	// 		let current = photosData[j];
-	// 		photosArr.push(current)
-	// 	}
-	// 	Promise.all(photosArr)
-	// 	.then(result => {
-	// 		// console.log('result', result)
-	// res.send(results)
 };
 
 const getMetaReview = async (req, res) => {
@@ -99,7 +95,9 @@ const getMetaReview = async (req, res) => {
 };
 
 const postReview = async (req, res) => {
-	// console.log('REQ', req.url);
+  let product_id = req.query.product_id;
+	// console.log('pID', product_id);
+
 	await models.postReview(req.body)
 	res.sendStatus(201);
 	console.log('Message sent')
