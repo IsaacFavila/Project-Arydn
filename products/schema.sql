@@ -108,12 +108,7 @@ ALTER TABLE skus ADD FOREIGN KEY (styleId) REFERENCES styles (id);
 -- ---
 -- Populate tables
 -- ---
-\COPY products FROM '/Users/isaacmfavila/Downloads/product.csv' delimiter ',' csv header;
-\COPY related FROM '/Users/isaacmfavila/Downloads/related.csv' delimiter ',' csv header;
-\COPY styles FROM '/Users/isaacmfavila/Downloads/styles.csv' delimiter ',' csv header;
-\COPY features FROM '/Users/isaacmfavila/Downloads/features.csv' delimiter ',' csv header;
-\COPY photos FROM '/Users/isaacmfavila/Downloads/photos.csv' delimiter ',' csv header;
-\COPY skus FROM '/Users/isaacmfavila/Downloads/skus.csv' delimiter ',' csv header;
+
 
 -- ---
 -- Indices
