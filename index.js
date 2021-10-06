@@ -17,6 +17,11 @@ app.use('/qa', qaRouter);
 const reviewsRouter = require('./reviews/routes.js');
 app.use('/', reviewsRouter);
 
+// this is my loader.io authentication (charles)
+app.get('/loaderio-9d1abb859f618dc47e030676fcb4c41f.txt', function (req, res) {
+  res.send('loaderio-9d1abb859f618dc47e030676fcb4c41f');
+})
+
 app.get('/helloworld', function (req, res) {
   res.send('Hello world');
 })
