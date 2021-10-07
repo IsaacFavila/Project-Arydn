@@ -113,3 +113,19 @@ ALTER TABLE answerphotos ADD FOREIGN KEY (answer_id) REFERENCES answers (id);
 CREATE INDEX idx_questions_product_id ON questions(product_id);     -- to speed up getQuestions
 CREATE INDEX idx_answerphotos_answer_id ON answerphotos(answer_id); -- to speed up getQuestionsTwo
 CREATE INDEX idx_answers_question_id ON answers(question_id);       -- to speed up getQuestionsTwo & getAnswers
+
+
+-- --------------------------------
+-- SET SERIAL START VALUES --------
+-- --------------------------------
+
+
+-- ALTER SEQUENCE answers_id_seq RESTART WITH SELECT MAX(id) FROM answers + 1;
+-- ALTER SEQUENCE questions_question_id_seq RESTART WITH ((SELECT MAX(question_id) FROM questions) + 1);
+-- ALTER SEQUENCE answerphotos_photo_id RESTART WITH ((SELECT MAX(photo_id) FROM answerphotos) + 1);
+
+
+
+ALTER SEQUENCE answers_id_seq RESTART WITH 8000000;
+ALTER SEQUENCE questions_question_id_seq RESTART WITH 8000000;
+ALTER SEQUENCE answerphotos_photo_id_seq RESTART WITH 8000000;
