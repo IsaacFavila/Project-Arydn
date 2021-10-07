@@ -2,7 +2,7 @@ const {Pool} = require('pg');
 
 const pool = new Pool({
   user: 'postgres',
-  host: 'localhost',
+  host: '3.144.159.12', // this is the IP of the EC2 instance containing my DB
   database: 'questions_answers',
   password: 'postgrespw',
   port: 5432
