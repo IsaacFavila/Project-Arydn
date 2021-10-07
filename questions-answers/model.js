@@ -27,13 +27,13 @@ exports.getAnswers = (question_id, page, count) => {
 
 
 exports.addQuestion = ({body, name, email, product_id}) => {
-  var queryString = 'INSERT INTO questions(question_id, question_body, question_date, asker_name, product_id, email, question_helpfulness) VALUES (((SELECT MAX(question_id) FROM questions) + 1), $1, CURRENT_TIMESTAMP, $2, $4, $3, 0)';
+  var queryString = 'INSERT INTO questions(question_body, question_date, asker_name, product_id, email, question_helpfulness) VALUES ($1, CURRENT_TIMESTAMP, $2, $4, $3, 0)';
   var queryParams = [body, name, email, product_id];
   return db.query(queryString, queryParams);
 };
 
 exports.addAnswer = ({body, name, email, photos}, question_id) => {
-  var queryString = 'INSERT INTO answers(id, body, date, answerer_name, helpfulness, question_id, email) VALUES (((SELECT MAX(id) FROM answers) + 1), $1, CURRENT_TIMESTAMP, $2, $3, $4, $5) RETURNING id';
+  var queryString = 'INSERT INTO answers(body, date, answerer_name, helpfulness, question_id, email) VALUES (($1, CURRENT_TIMESTAMP, $2, $3, $4, $5) RETURNING id';
   var queryParams = [body, name, 0, question_id, email];
   return db.query(queryString, queryParams);
 };

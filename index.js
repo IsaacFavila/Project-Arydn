@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mysql = require('mysql');
 const app = express();
+const {QA_LOADER} = require('./questions-answers/config.js');
 
 app.use(express.urlencoded({extended: true}));
 app.set('port', process.env.PORT || 3000);
@@ -18,8 +19,8 @@ app.use('/qa', qaRouter);
 // app.use('/', reviewsRouter);
 
 // this is my loader.io authentication (charles)
-app.get('/loaderio-0efcd06f327d722eca0a765f984d3241.txt', function (req, res) {
-  res.send('loaderio-0efcd06f327d722eca0a765f984d3241');
+app.get(`/${QA_LOADER}.txt`, function (req, res) {
+  res.send(QA_LOADER);
 })
 
 app.get('/helloworld', function (req, res) {
