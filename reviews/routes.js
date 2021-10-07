@@ -2,6 +2,7 @@ var controller = require('./controllers.js');
 var express = require('express');
 var router = express.Router();
 
+router.get('/reviews', controller.getReviews);
 router.get('/reviews?:product_id', controller.getAllReviews);
 router.get('/reviews/meta?:product_id', controller.getMetaReview);
 router.post('/reviews?:product_id', controller.postReview);

@@ -2,6 +2,13 @@ let db = require('./services/db');
 let helper = require('./helper');
 let config = require('./config');
 
+const getReviews = async (page=1, count=5) => {
+  let q = `SELECT * 
+          FROM reviews 
+          LIMIT ${page-1}, ${count}`;
+  let params = [page, count];
+  return db.query(q, params );
+};
 const getAllReviews = async (id, page=1, count=5) => {
   let q = `SELECT review_id, rating, summary, recommend, response, body, FROM_UNIXTIME(review_date/1000) as date, reviewer_name, helpfulness 
           FROM reviews 
@@ -83,6 +90,7 @@ const updateReported = async (id, reviews) => {
 };
 
 module.exports = {
+  getReviews,
   getAllReviews,
   getPhotos,
 	getMetaReview,

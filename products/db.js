@@ -1,12 +1,12 @@
 const Pool = require('pg').pool;
 
-const pool = new Pool({
-  user: 'postgres',
-  password: 'postgres',
-  database: 'products',
-  host: ''
-  port: 5432
-});
+// const pool = new Pool({
+//   user: 'postgres',
+//   password: 'postgres',
+//   database: 'products',
+//   host: '',
+//   port: 5432
+// });
 
 // pool.connect(err => {
 //   if (err) {
@@ -14,9 +14,9 @@ const pool = new Pool({
 //   }
 // });
 
-pool.query('select name from products where id = 1')
-  .then(data => {
-    console.log('server connected to ubuntu database');
-  })
+// pool.query('select name from products where id = 1')
+//   .then(data => {
+//     console.log('server connected to ubuntu database');
+//   })
 
-module.exports = pool;
+// module.exports = pool;

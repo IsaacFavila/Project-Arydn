@@ -1,6 +1,17 @@
 
 var models = require('./models.js');
 
+const getReviews = async (req, res) => {
+  
+  models.getReviews()
+  .then(data => {
+    res.send(data)
+  })
+  .catch((error) =>  {
+    res.status(500).send(error)
+  })  
+};
+
 const getAllReviews = async (req, res) => {
 	
   let product_id = req.query.product_id;
@@ -42,7 +53,7 @@ const getAllReviews = async (req, res) => {
 	})
   .catch((error) =>  {
     console.log('Error ')
-    res.sendStatus(400);
+    res.status(500).send(error)
   })  
 };
 
@@ -110,6 +121,7 @@ const updateHelpful = async (req, res) => {
 	}) 
 	.catch(error => {
 		console.log('Error', error)
+    res.status(500).send(error)
 	})
 };
 
@@ -120,10 +132,12 @@ const updateReported = async (req, res) => {
 	}) 
 	.catch(error => {
 		console.log('Error', error)
+    res.status(500).send(error)
 	})
 };
 
 module.exports = {
+  getReviews,
   getAllReviews,
 	getMetaReview,
 	postReview,

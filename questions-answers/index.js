@@ -10,7 +10,7 @@ const pool = new Pool({
 
 pool.connect(err => {
   if (err) {
-  console.error('connection error', err.stack);
+  // console.error('connection error', err.stack);
   } else {
   console.log('questions_answers database connected');
   }
