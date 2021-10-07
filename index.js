@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mysql = require('mysql');
 const app = express();
-const {QA_LOADER} = require('./questions-answers/config.js');
+const {QA_LOADER} = require('./config.js');
 
 app.use(express.urlencoded({extended: true}));
 app.set('port', process.env.PORT || 3000);
