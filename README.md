@@ -6,8 +6,8 @@
 - [How to View](#how-to-view-and-interact-with-retail-portal)
 
 ## Team Members & Roles
-- [Isaac Favila](https://github.com/IsaacFavila) - Ratings & Reviews | [LinkedIn](https://www.linkedin.com/in/isaacmfavila/)
-- [Charles Ewing](https://github.com/charlesewing3) - Ratings & Reviews | [LinkedIn](https://www.linkedin.com/in/charlesewing3/) 
+- [Isaac Favila](https://github.com/IsaacFavila) - Product Overview | [LinkedIn](https://www.linkedin.com/in/isaacmfavila/)
+- [Charles Ewing](https://github.com/charlesewing3) - Questions & Answers | [LinkedIn](https://www.linkedin.com/in/charlesewing3/) 
 - [Art Taphanand](https://github.com/ataph15) - Ratings & Reviews | [LinkedIn](https://www.linkedin.com/in/art-taphanand/)
 
 
