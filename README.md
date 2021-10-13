@@ -2,7 +2,6 @@
 
 ## Table of Contents
 - [Team Members](#team-members-&-roles)
-- [Description](#description)
 - [Technologies Used](#technologies-used)
 - [How to View](#how-to-view-and-interact-with-retail-portal)
 
@@ -10,9 +9,6 @@
 - [Isaac Favila](https://github.com/IsaacFavila) - Ratings & Reviews | [LinkedIn](https://www.linkedin.com/in/isaacmfavila/)
 - [Charles Ewing](https://github.com/charlesewing3) - Ratings & Reviews | [LinkedIn](https://www.linkedin.com/in/charlesewing3/) 
 - [Art Taphanand](https://github.com/ataph15) - Ratings & Reviews | [LinkedIn](https://www.linkedin.com/in/art-taphanand/)
-
-
-## Description
 
 
 ## Technologies Used
