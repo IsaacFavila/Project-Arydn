@@ -17,13 +17,6 @@ Project Catwalk comprises a complete redesign of the retail portal designed to a
 
 ## Technologies Used
 
-### Front-End Development
-JavaScript <img align="left" alt="JavaScript" width="30px" src="https://raw.githubusercontent.com/jmnote/z-icons/master/svg/javascript.svg" />
-<br />
-
-React <img align="left" alt="React" width="30px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png" />
-<br />
-
 ### Back-End Development
 Node.js <img align="left" alt="Node JS" width="30px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/nodejs/nodejs.png" />
 <br />
@@ -51,11 +44,3 @@ Slack <img align="left" alt="Slack" width="30px" src="https://github.com/devicon
 <br />
 <br />
 
-## How to View and Interact with Retail Portal
-To view on a local machine, please follow these instructions:
-1. Fork the repository and clone to your local machine using `git clone https://github.com/Orcus-FEC/FEC.git`
-2. Generate a github personal access token to access the API and save token securely within file. You can read more about creating a token [here](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
-3. Run `npm install` to download dependencies.
-4. Run `npm run react-dev` to launch the Webpack bundler.
-5. Run `npm run start` to launch the Server environment.
-6. Open <b>http://localhost:3000/</b> in your Browser.
