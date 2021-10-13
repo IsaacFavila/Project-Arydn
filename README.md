@@ -28,10 +28,18 @@ Express.js <img align="left" alt="Express" width="30px" src="https://github.com/
 Jest <img align="left" alt="Jest" width="30px" src="https://raw.githubusercontent.com/vscode-icons/vscode-icons/master/icons/file_type_jest.svg?sanitize=true" />
 <br />
 
+Loader.io
+<br />
+
 ### Database
+PostgreSQL
 <br />
 
 ### Deployment
+AWS EC2
+<br />
+
+NGINX
 <br />
 
 ### Project Management
