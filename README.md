@@ -24,18 +24,18 @@ Express.js <img align="left" alt="Express" width="30px" src="https://github.com/
 Jest <img align="left" alt="Jest" width="30px" src="https://raw.githubusercontent.com/vscode-icons/vscode-icons/master/icons/file_type_jest.svg?sanitize=true" />
 <br />
 
-Loader.io <img align="left" width="30px" src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1420816527/efcb3lfvkif27xsoreye.png" />
+Loader.io <img align="left" width="30px" src="https://seeklogo.com/images/L/loader-logo-9685934C07-seeklogo.com.png" />
 <br />
 
 ### Database
-PostgreSQL <img align="left" width="30px" src="https://icon2.cleanpng.com/20180315/ifq/kisspng-postgresql-logo-computer-software-database-open-source-vector-images-5aaa26e1a38cf4.7370214515211005136699.jpg" />
+PostgreSQL <img align="left" width="30px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1200px-Postgresql_elephant.svg.png" />
 <br />
 
 ### Deployment
-AWS EC2 <img align="left" width="30px" src="https://image.pngaaa.com/681/876681-middle.png" />
+AWS EC2 <img align="left" width="30px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1024px-Amazon_Web_Services_Logo.svg.png" />
 <br />
 
-NGINX <img align="left" width="30px" src="https://icon2.cleanpng.com/20180329/zdw/kisspng-nginx-reverse-proxy-computer-software-web-cache-tr-container-5abc835fbb1742.2271946815223038397663.jpg" />
+NGINX <img align="left" width="30px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Nginx_logo.svg/1200px-Nginx_logo.svg.png" />
 <br />
 
 ### Project Management
