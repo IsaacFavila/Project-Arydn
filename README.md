@@ -32,14 +32,14 @@ Loader.io <img align="left" width="30px" src="https://res.cloudinary.com/crunchb
 <br />
 
 ### Database
-PostgreSQL
+PostgreSQL <img align="left" width="30px" src="https://icon2.cleanpng.com/20180315/ifq/kisspng-postgresql-logo-computer-software-database-open-source-vector-images-5aaa26e1a38cf4.7370214515211005136699.jpg" />
 <br />
 
 ### Deployment
-AWS EC2
+AWS EC2 <img align="left" width="30px" src="https://image.pngaaa.com/681/876681-middle.png" />
 <br />
 
-NGINX
+NGINX <img align="left" width="30px" src="https://icon2.cleanpng.com/20180329/zdw/kisspng-nginx-reverse-proxy-computer-software-web-cache-tr-container-5abc835fbb1742.2271946815223038397663.jpg" />
 <br />
 
 ### Project Management
