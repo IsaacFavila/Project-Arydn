@@ -28,7 +28,7 @@ Express.js <img align="left" alt="Express" width="30px" src="https://github.com/
 Jest <img align="left" alt="Jest" width="30px" src="https://raw.githubusercontent.com/vscode-icons/vscode-icons/master/icons/file_type_jest.svg?sanitize=true" />
 <br />
 
-Loader.io
+Loader.io <img align="left" width="30px" src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1420816527/efcb3lfvkif27xsoreye.png" />
 <br />
 
 ### Database
