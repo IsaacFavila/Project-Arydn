@@ -3,7 +3,6 @@
 ## Table of Contents
 - [Team Members](#team-members-&-roles)
 - [Technologies Used](#technologies-used)
-- [How to View](#how-to-view-and-interact-with-retail-portal)
 
 ## Team Members & Roles
 - [Isaac Favila](https://github.com/IsaacFavila) - Product Overview | [LinkedIn](https://www.linkedin.com/in/isaacmfavila/)
