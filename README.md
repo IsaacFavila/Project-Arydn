@@ -1,4 +1,4 @@
-# Project Arydn
+# Project Atelier
 
 ## Table of Contents
 - [Team Members](#team-members-&-roles)
