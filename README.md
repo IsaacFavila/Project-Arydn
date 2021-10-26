@@ -2,12 +2,16 @@
 
 ## Table of Contents
 - [System Design](#system-design)
+- [Database Schema](#database-schema)
 - [Team Members](#team-members-&-roles)
 - [Technologies Used](#technologies-used)
 
 ## System Design
 <img src="https://i.imgur.com/QP92shV.png"/>
 <img src="https://i.imgur.com/eClZKSo.png"/>
+
+## Database Schema
+<img src="https://i.imgur.com/Hicxk86.png"/>
 
 ## Team Members & Roles
 - [Isaac Favila](https://github.com/IsaacFavila) - Product Overview | [LinkedIn](https://www.linkedin.com/in/isaacmfavila/)
