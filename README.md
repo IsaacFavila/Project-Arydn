@@ -3,8 +3,8 @@
 ## Table of Contents
 - [System Design](#system-design)
 - [Database Schema](#database-schema)
-- [Team Members](#team-members-&-roles)
 - [Technologies Used](#technologies-used)
+- [Team Members](#team-members-&-roles)
 
 ## System Design
 <img src="https://i.imgur.com/QP92shV.png"/>
@@ -12,12 +12,6 @@
 
 ## Database Schema
 <img src="https://i.imgur.com/Hicxk86.png"/>
-
-## Team Members & Roles
-- [Isaac Favila](https://github.com/IsaacFavila) - Product Overview | [LinkedIn](https://www.linkedin.com/in/isaacmfavila/)
-- [Charles Ewing](https://github.com/charlesewing3) - Questions & Answers | [LinkedIn](https://www.linkedin.com/in/charlesewing3/) 
-- [Art Taphanand](https://github.com/ataph15) - Ratings & Reviews | [LinkedIn](https://www.linkedin.com/in/art-taphanand/)
-
 
 ## Technologies Used
 
@@ -54,3 +48,7 @@ Slack <img align="left" alt="Slack" width="30px" src="https://github.com/devicon
 <br />
 <br />
 
+## Team Members & Roles
+- [Isaac Favila](https://github.com/IsaacFavila) - Product Overview | [LinkedIn](https://www.linkedin.com/in/isaacmfavila/)
+- [Charles Ewing](https://github.com/charlesewing3) - Questions & Answers | [LinkedIn](https://www.linkedin.com/in/charlesewing3/) 
+- [Art Taphanand](https://github.com/ataph15) - Ratings & Reviews | [LinkedIn](https://www.linkedin.com/in/art-taphanand/)
